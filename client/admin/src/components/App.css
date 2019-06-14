@@ -1,0 +1,10 @@
+/** */
+html {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 16px;
+}
+
+div, section, nav, ul, li, header, footer, p, h1, h2, h3, h4, h5, h6, a, input, button, form {
+    box-sizing: border-box;
+}
+

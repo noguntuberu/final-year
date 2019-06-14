@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+//
+export const ADD_DRAFT = 'ADD_DRAFT';
+export const ADD_POST = 'ADD_POST';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_CREDENTIAL = 'ADD_CREDENTIAL';
+export const ADD_POST_ANALYSIS = 'ADD_POST_ANALYSIS';
+export const ADD_GROUP_ANALYSIS = 'ADD_GROUP_ANALYSIS';
+export const UPDATE_POST_ANALYSIS = 'UPDATE_POST_ANALYSIS';
+export const UPDATE_GROUP_ANALYSIS = 'UPDATE_GROUP_ANALYSIS';

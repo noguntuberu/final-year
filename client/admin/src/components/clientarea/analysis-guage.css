@@ -1,0 +1,18 @@
+/**/
+.analysis-guage {
+    padding: 5px 10px;
+}
+
+.guage-wrapper {
+    padding: 5px 0;
+}
+.guage-outer-bar {
+    height: 30px;
+    border-radius: 5px;
+    background: linear-gradient(to right, red, yellow, rgb(6, 219, 6));
+}
+
+.guage-inner-bar {
+    height: 100%;
+    background: #fff;
+}
