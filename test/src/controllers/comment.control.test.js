@@ -26,6 +26,6 @@ describe ("Comment Controller Tests:", () => {
 
     it ("Saves info to database", async () => {
         let result = await CommentController.saveToDatabase();
-        assert.isTrue(result);
+        assert.isTrue(result.success);
     })
 })

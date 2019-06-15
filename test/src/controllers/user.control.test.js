@@ -29,6 +29,6 @@ describe ("User Controller: ", () => {
 
     it ("Should save user's information to database", async () => {
         let result = await UserController.saveToDatabase();
-        assert.isTrue(result);
+        assert.isTrue(result.success);
     })
 })
