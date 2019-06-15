@@ -19,9 +19,10 @@ module.exports.createRecord = async data => {
     return await newData.save();
 }
 
-module.exports.readRecord = async userId => {
+module.exports.readRecord = async (userId, postId) => {
     return await UserAction.findOne({
-        userId
+        userId,
+        postId
     })
 }
 
