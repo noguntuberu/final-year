@@ -4,11 +4,16 @@
 const   express = require('express'),
         mongoose = require('mongoose');
         cors = require('cors'),
-        multer = require('multer'),
+        fileUpload = require('express-fileupload'),
         bodyParser = require('body-parser'),
         compression = require('compression'),
         helmet = require('helmet'),
         config = require('./config/config');
+
+const UserRoute = require('./src/routes/user.route');
+const PostRoute = require('./src/routes/post.route');
+
+const System = require('./src/controllers/system.control');
 
 // Set Up Database
 config.setUpDatabase(mongoose);
@@ -17,18 +22,23 @@ config.setUpDatabase(mongoose);
 const app = express();
 
 // Set up Middleware
-app .use(express.static('client'))
-    .use(compression)
-    .use(cors)
-    .use(multer().array())
-    .use(bodyParser.json())
-    .use(bodyParser.urlencoded({extended: true}))
-    .use(helmet);
+app.use(express.static('client'));
+app.use(compression());
+app.use(cors());
+app.use(fileUpload());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(helmet());
 
 // Set up Routes
-
+app.use('/user', UserRoute);
+app.use('/post', PostRoute);
 
 // Start Server
-app.listen(process.env.PORT || 3000, () => {
-    console.log("Server Running...");
+app.listen(port = process.env.PORT || 3000, async () => {
+    // Load up System resources from database
+    await System.loadUsersFromDatabase();
+    await System.loadPostsFromDatabase();
+    await System.loadPostStatsFromDatabase();
+    await System.loadCommentsFromDatabase();
 });

@@ -21,7 +21,7 @@ module.exports.readRecord = async postId => {
     return await PostAnalysis.findOne({
         postId
     });
-}
+} 
 
 module.exports.updateRecord = async data => {
     return await PostAnalysis.updateOne(

@@ -17,7 +17,7 @@ const Comment = module.exports = mongoose.model('Comment', commentSchema);
 module.exports.createRecord = async data => {
     const newData = new Comment(data);
     return await newData.save();
-}
+} 
 
 module.exports.readRecordById = async _id => {
     return await Comment.findOne({
@@ -29,6 +29,12 @@ module.exports.readRecordById = async _id => {
 module.exports.readRecordsByPost = async postId => {
     return await Comment.find({
         postId,
+        isActive: true
+    });
+}
+
+module.exports.readAllRecords = async () => {
+    return await Comment.find({
         isActive: true
     });
 }

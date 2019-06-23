@@ -962,7 +962,7 @@
     jest-changed-files "^24.8.0"
     jest-config "^24.8.0"
     jest-haste-map "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-regex-util "^24.3.0"
     jest-resolve-dependencies "^24.8.0"
     jest-runner "^24.8.0"
@@ -994,7 +994,7 @@
   integrity sha512-2M4d5MufVXwi6VzZhJ9f5S/wU4ud2ck0kxPof1Iz3zWx6Y+V2eJrES9jEktB6O3o/oEyk+il/uNu9PvASjWXQw==
   dependencies:
     "@jest/types" "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-mock "^24.8.0"
 
 "@jest/reporters@^24.8.0":
@@ -1273,9 +1273,9 @@
   resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"
   integrity sha512-FvUupuM3rlRsRtCN+fDudtmytGO6iHJuuRKS1Ss0pG5z8oX0diNEw94UEL7hgDbpN94rgaK5R7sWm6RrSkZuAQ==
 
-"@types/vfile-message@*":
+"@types/vfile-payload@*":
   version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/vfile-message/-/vfile-message-1.0.1.tgz#e1e9895cc6b36c462d4244e64e6d0b6eaf65355a"
+  resolved "https://registry.yarnpkg.com/@types/vfile-payload/-/vfile-payload-1.0.1.tgz#e1e9895cc6b36c462d4244e64e6d0b6eaf65355a"
   integrity sha512-mlGER3Aqmq7bqR1tTTIVHq8KSAFFRyGbrxuM8C/H82g6k7r2fS+IMEkIu3D7JHzG10NvPdR8DNx0jr0pwpp4dA==
   dependencies:
     "@types/node" "*"
@@ -1288,7 +1288,7 @@
   dependencies:
     "@types/node" "*"
     "@types/unist" "*"
-    "@types/vfile-message" "*"
+    "@types/vfile-payload" "*"
 
 "@types/yargs@^12.0.2", "@types/yargs@^12.0.9":
   version "12.0.12"
@@ -3736,7 +3736,7 @@ expect@^24.8.0:
     ansi-styles "^3.2.0"
     jest-get-type "^24.8.0"
     jest-matcher-utils "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-regex-util "^24.3.0"
 
 express@^4.16.2:
@@ -5263,7 +5263,7 @@ jest-jasmine2@^24.8.0:
     is-generator-fn "^2.0.0"
     jest-each "^24.8.0"
     jest-matcher-utils "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-runtime "^24.8.0"
     jest-snapshot "^24.8.0"
     jest-util "^24.8.0"
@@ -5287,9 +5287,9 @@ jest-matcher-utils@^24.8.0:
     jest-get-type "^24.8.0"
     pretty-format "^24.8.0"
 
-jest-message-util@^24.8.0:
+jest-payload-util@^24.8.0:
   version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-message-util/-/jest-message-util-24.8.0.tgz#0d6891e72a4beacc0292b638685df42e28d6218b"
+  resolved "https://registry.yarnpkg.com/jest-payload-util/-/jest-payload-util-24.8.0.tgz#0d6891e72a4beacc0292b638685df42e28d6218b"
   integrity sha512-p2k71rf/b6ns8btdB0uVdljWo9h0ovpnEe05ZKWceQGfXYr4KkzgKo3PBi8wdnd9OtNh46VpNIJynUn/3MKm1g==
   dependencies:
     "@babel/code-frame" "^7.0.0"
@@ -5366,7 +5366,7 @@ jest-runner@^24.8.0:
     jest-haste-map "^24.8.0"
     jest-jasmine2 "^24.8.0"
     jest-leak-detector "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-resolve "^24.8.0"
     jest-runtime "^24.8.0"
     jest-util "^24.8.0"
@@ -5391,7 +5391,7 @@ jest-runtime@^24.8.0:
     graceful-fs "^4.1.15"
     jest-config "^24.8.0"
     jest-haste-map "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-mock "^24.8.0"
     jest-regex-util "^24.3.0"
     jest-resolve "^24.8.0"
@@ -5419,7 +5419,7 @@ jest-snapshot@^24.8.0:
     expect "^24.8.0"
     jest-diff "^24.8.0"
     jest-matcher-utils "^24.8.0"
-    jest-message-util "^24.8.0"
+    jest-payload-util "^24.8.0"
     jest-resolve "^24.8.0"
     mkdirp "^0.5.1"
     natural-compare "^1.4.0"
@@ -9462,16 +9462,16 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vfile-message@^1.0.0:
+vfile-payload@^1.0.0:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/vfile-message/-/vfile-message-1.1.1.tgz#5833ae078a1dfa2d96e9647886cd32993ab313e1"
+  resolved "https://registry.yarnpkg.com/vfile-payload/-/vfile-payload-1.1.1.tgz#5833ae078a1dfa2d96e9647886cd32993ab313e1"
   integrity sha512-1WmsopSGhWt5laNir+633LszXvZ+Z/lxveBf6yhGsqnQIhlhzooZae7zV6YVM1Sdkw68dtAW3ow0pOdPANugvA==
   dependencies:
     unist-util-stringify-position "^1.1.1"
 
-vfile-message@^2.0.0:
+vfile-payload@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/vfile-message/-/vfile-message-2.0.0.tgz#750bbb86fe545988a67e899b329bbcabb73edef6"
+  resolved "https://registry.yarnpkg.com/vfile-payload/-/vfile-payload-2.0.0.tgz#750bbb86fe545988a67e899b329bbcabb73edef6"
   integrity sha512-YS6qg6UpBfIeiO+6XlhPOuJaoLvt1Y9g2cmlwqhBOOU0XRV8j5RLeoz72t6PWLvNXq3EBG1fQ05wNPrUoz0deQ==
   dependencies:
     "@types/unist" "^2.0.2"
@@ -9485,7 +9485,7 @@ vfile@^3.0.0:
     is-buffer "^2.0.0"
     replace-ext "1.0.0"
     unist-util-stringify-position "^1.0.0"
-    vfile-message "^1.0.0"
+    vfile-payload "^1.0.0"
 
 vfile@^4.0.0:
   version "4.0.0"
@@ -9496,7 +9496,7 @@ vfile@^4.0.0:
     is-buffer "^2.0.0"
     replace-ext "1.0.0"
     unist-util-stringify-position "^2.0.0"
-    vfile-message "^2.0.0"
+    vfile-payload "^2.0.0"
 
 vm-browserify@0.0.4:
   version "0.0.4"

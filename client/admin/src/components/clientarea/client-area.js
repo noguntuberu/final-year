@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import SideNav from './nav-side';
 import NewPost from './new-post';
@@ -8,8 +9,7 @@ import AnalysisArea from './analysis-display';
 
 
 const ClientArea = props => {
-    return (
-        <div>
+    return props.isLoggedIn ? (<div>
             <header>
                 <div className="d-flex justify-content-between align-items-center">
                     <div className="site-name">LAUPOLL</div>
@@ -30,17 +30,19 @@ const ClientArea = props => {
                 </section>
                 <section className="right-section">
                     <Switch>
-                        <Route exact path="/account" component={PostList} />
-                        <Route path="/account/post/new" component={NewPost} />
-                        <Route exact path="/account/post/:id" component={DetailedPost} />
-                        <Route path="/account/post/analysis/:id" component={AnalysisArea} />
-                        <Redirect from = "/account/post" to="/account" />
+                        <Route exact path="/admin/account" component={PostList} />
+                        <Route path="/admin/account/post/new" component={NewPost} />
+                        <Route exact path="/admin/account/post/:id" component={DetailedPost} />
+                        <Route path="/admin/account/post/analysis/:id" component={AnalysisArea} />
+                        <Redirect from = "/admin/account/post" to="/account" />
                     </Switch>
 
                 </section>
             </div>
-        </div>
-    )
+        </div>) : <Redirect to="/admin" />
 }
+const mapStateToProps = state => ({
+    ...state.credential
+})
 
-export default ClientArea;
+export default connect(mapStateToProps, null)(ClientArea);

@@ -1,8 +1,8 @@
 /** */
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const UserSchema = mongoose.Schema;
 
-const userSchema = new Schema({
+const userSchema = new UserSchema({
     firstName: {type: String, required: true},
     lastName: {type: String, required: true},
     email: {type: String, required: true},
@@ -15,7 +15,7 @@ const userSchema = new Schema({
 const User = module.exports = mongoose.model('User', userSchema);
 
 module.exports.createRecord = async data => {
-    data = new User (data);
+    data = new User(data);
     return await data.save();
 }
 
@@ -30,6 +30,12 @@ module.exports.readRecordByLogin = async email => {
     return await User.findOne({
         isActive: true,
         email
+    })
+}
+
+module.exports.readAllRecords = async () => {
+    return await User.find({
+        isActive: true
     })
 }
 

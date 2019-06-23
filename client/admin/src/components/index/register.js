@@ -9,7 +9,7 @@ const Register = props => {
             <input name="password" type="password" placeholder="Password"/>
             <input name="submit" type="button" value="Login"/>
             <div className="">
-                <NavLink to="/">Log In</NavLink>
+                <NavLink to="/admin">Log In</NavLink>
             </div>
         </form>
     )

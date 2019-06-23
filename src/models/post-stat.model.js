@@ -20,8 +20,12 @@ module.exports.createRecord = async data => {
 
 module.exports.readRecord = async postId => {
     return await PostStat.findOne({
-        postId
+        postId 
     });
+}
+
+module.exports.readAllRecords = async () => {
+    return await PostStat.find({});
 }
 
 module.exports.updateRecord = async data => {

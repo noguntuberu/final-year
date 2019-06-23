@@ -12,7 +12,7 @@ const userAction = new Schema({
 });
 
 const UserAction = module.exports = mongoose.model('UserAction', userAction);
-
+ 
 // MODEL ACTIONS
 module.exports.createRecord = async data => {
     const newData = new UserAction(data);
@@ -30,5 +30,5 @@ module.exports.updateRecord = async data => {
     return await UserAction.updateOne(
         {_id: data._id},
         {...data}
-    )
+    ) 
 }

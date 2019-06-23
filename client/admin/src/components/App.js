@@ -15,9 +15,8 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <div className="page-wrapper">
-                    <Route exact path="/" component={Index} />
-                    <Route path="/register" component={Index} />
-                    <Route path="/account" component={ClientArea} />
+                    <Route path="/admin/account" component={ClientArea} />
+                    <Route exact path="/admin" component={Index} />
                 </div>
             </BrowserRouter>
         )

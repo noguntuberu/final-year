@@ -22,7 +22,7 @@ module.exports.createRecord = async data => {
 module.exports.readRecord = async _id => {
     return await GroupAnalysis.findOne({
         _id
-    });
+    }); 
 }
 
 module.exports.readRecordByPost = async postId => {

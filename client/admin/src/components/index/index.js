@@ -1,12 +1,16 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Login from './login';
-import Register from './register';
+//import Register from './register';
 
 const IndexComponent = () =>  (
     <div className="index-wrapper">
-        <Route exact path="/" component={Login} />
-        <Route path="/register" component={Register} />
+        <div className="veil">
+            <h1>ENTSYS</h1>
+            <div className="form-wrapper">
+                <Route exact path="/admin/" component={Login} />
+            </div>
+        </div>
     </div>
 );
 
