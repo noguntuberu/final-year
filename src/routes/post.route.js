@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const Router = express.Router();
+const postModel = require('../models/post.model');
 
 //
 const System = require('../controllers/system.control');
@@ -8,7 +9,7 @@ const System = require('../controllers/system.control');
 
 
 Router.get('/', async (req, res) => {
-    res.json(System.getPosts());    
+    res.json(System.reducePostsAndStatsForReduxStore());    
 })
 
 Router.get('/:id', async (req, res) => {
@@ -60,6 +61,11 @@ Router.put('/view/:id', async (req, res) => {
 
 Router.put('/stat', async (req, res) => {
     res.send(System.updateLikeDislikeCounts({...req.body}));
+})
+
+//
+Router.delete('/', async (req, res) => {
+    res.send(await postModel.remove({}));
 })
 
 module.exports = Router;
