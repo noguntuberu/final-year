@@ -51,7 +51,7 @@ const NewPost = props => {
                 break;
             case 'image':
                 setPostImage(value);
-                setPostImageName(value.name ? value.name : 'Choose file...');
+                setPostImageName(value !== undefined && value.name ? value.name : 'Choose file...');
                 break;
             default:
                 break

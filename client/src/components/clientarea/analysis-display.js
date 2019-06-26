@@ -31,6 +31,7 @@ const AnalysisDisplay = props => {
 
         return extractedItems;
     }
+
     return (
         <div>
             <TextPostCard postData={props.posts[id]}/>

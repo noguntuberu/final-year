@@ -9,11 +9,10 @@ import Visibility from '@material-ui/icons/Visibility';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const TextPostCard = ({user, postData}) => {
+const TextPostCard = ({postPath, postData}) => {
     
-    const {_id, title, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
-    const postUri = typeof(user) === 'number' && user === 0 ? 
-                    `/admin/post/analysis/${_id}` : `/member/post/${_id}`;
+    const {postId, title, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
+    const postUri = `/${postPath}/${postId}`;
     //
     return (
         <div className="card">

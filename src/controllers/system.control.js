@@ -41,7 +41,9 @@ class System {
      * 
      * @USER_CONTROLLER
      */
-
+    clearUsers() {
+        this.users = {}
+    }
     getUsers() {
         return this.users;        
     }
@@ -84,9 +86,15 @@ class System {
     /***
      * @POST_CONTROLLER
      */
-
+    clearPosts() {
+        this.posts = {}
+    }
     getPosts() {
         return this.posts;
+    }
+
+    getAPost(postId) {
+        return this.posts[postId];
     }
 
     addNewPostToList(post) {
@@ -97,11 +105,7 @@ class System {
     }
 
     async addNewPost(data) {
-        data = {
-            ...data,
-            mediaUri: '/public/uploads/' + data.mediaUri
-        }
-
+        //
         const Post = new this.post;
         Post.setInfo(data);
         const result = this.convertToJSON(await Post.createNewRecord());

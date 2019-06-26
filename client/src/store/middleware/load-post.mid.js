@@ -7,6 +7,7 @@ export default store => next => action => {
         // get posts from DB
         axios.get(`${server.host}/post/`)
              .then(response => {
+                console.log(response.data);
                 next(addLoadedPosts(response.data));
              })
              .catch(err => {

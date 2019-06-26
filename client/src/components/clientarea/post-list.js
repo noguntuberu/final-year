@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
 import { connect } from 'react-redux';
 import {loadPosts} from '../../store/action-creators/post.ac';
 import TextPostCard from './post-card-text';
@@ -8,21 +8,28 @@ import './client-area.css'
 
 
 const PostList = props => {
-    const {loadPosts, posts, level} = props;
-
+    const {loadPostsForDisplay, posts, level} = props;
     useEffect(() => {
-        loadPosts();
-        //console.log([props.posts]);
-    }, [loadPosts]);
+        loadPostsForDisplay();
+    }, [loadPostsForDisplay]);
+
+    const [userClass, setUserClass] = useState('member');
+    const [postPath, setPostPath] = useState('member/post');
+    useEffect(() => {
+        if(level === 0 && userClass !== 'admin') {
+            setUserClass('admin');
+            setPostPath('admin/post/analysis');
+        }
+    },[userClass, level]);
 
     const extractPosts = postList => {
         let posts = [];
         for (const postId in postList) {
             let post;
             if (postList[postId].mediaUri === null) {
-                post = <TextPostCard user={level} postData = {{...postList[postId]}} key={postId}/>
+                post = <TextPostCard postPath={postPath} postData = {{...postList[postId]}} key={postId}/>
             } else {
-                post = <ImagePostCard user={level} postData = {{...postList[postId]}} key={postId}/>
+                post = <ImagePostCard postPath={postPath} postData = {{...postList[postId]}} key={postId}/>
             }
             posts = [
                 ...posts,
@@ -40,11 +47,11 @@ const PostList = props => {
 
 const mapStateToProps = state => ({
     posts: {...state.posts},
-    level: {...state.credential.level}
+    level: state.credential.level
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadPosts : () => {
+    loadPostsForDisplay : () => {
         dispatch(loadPosts());
     }
 })

@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { updateProcessStatus } from '../../store/action-creators/process.ac';
+import { uploadComment } from '../../store/action-creators/comment.ac';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CommentForm = () => {
@@ -17,4 +20,13 @@ const CommentForm = () => {
     )
 }
 
-export default CommentForm;
+const mapStateToProps = state => ({
+    userId : state.credential.userId,
+    commentStatus: {...state.processes.comment}
+})
+
+const mapDispatchToProps = dispatch => ({
+    updateCommentProcess: data => dispatch(updateProcessStatus(data)),
+    sendComment: data => dispatch(uploadComment(data))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(CommentForm);

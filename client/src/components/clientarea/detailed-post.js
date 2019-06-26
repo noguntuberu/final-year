@@ -10,13 +10,12 @@ import './client-area.css';
 
 const DetailedPost = props => {
     const id = props.match.params.id;
-    console.log(props);
     return (
         <div>
             {
                 props.posts[id].mediaUri ? <ImagePostCard postData = {props.posts[id]} /> : <TextPostCard postData = {props.posts[id]} />
             }
-            <CommentList />
+            <CommentList postId={id}/>
         </div>
     )
 }

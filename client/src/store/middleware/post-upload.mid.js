@@ -2,7 +2,6 @@
 import axios from 'axios';
 import server from './config';
 import { addPost } from '../action-creators/post.ac';
-import { addPostAnalysis } from '../action-creators/post-analysis.ac';
 import { updateProcessStatus} from '../action-creators/process.ac';
 
 export default store => next => action => {
@@ -26,26 +25,18 @@ export default store => next => action => {
         })
         .then(response => {
             const data = response.data;
-            console.log(data);
-            // if (data.success) {
-            //     store.dispatch(addPost(data.payload.post));
-            //     store.dispatch(addPostAnalysis(data.payload.postAnalysis));
-            //     store.dispatch(updateProcessStatus({
-            //         process: 'postUpload',
-            //         body: {
-            //             success: true, 
-            //             payload: "Post upload successful"
-            //         }
-            //     }));
-            // } else {
-            //     store.dispatch(updateProcessStatus({
-            //         process: 'postUpload',
-            //         body: {
-            //             success: false, 
-            //             payload: "Post upload unsuccessful"
-            //         }
-            //     }));
-            // }
+            if (data.success) {
+                store.dispatch(addPost(data.payload));
+                store.dispatch(updateProcessStatus({
+                    process: 'postUpload',
+                    body: "Upload Successful"
+                }));
+            } else {
+                store.dispatch(updateProcessStatus({
+                    process: 'postUpload',
+                    body: data
+                }));
+            }
         })
         .catch(err => {
             console.log(err)
