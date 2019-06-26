@@ -1,7 +1,8 @@
 import React from 'react';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Index from './index/index';
-import ClientArea from './clientarea/client-area';
+import AdminArea from './user-sections/admin-area';
+import MemberArea from './user-sections/member-area';
 
 class App extends React.Component {
     constructor(props) {
@@ -15,8 +16,11 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <div className="page-wrapper">
-                    <Route path="/admin/account" component={ClientArea} />
-                    <Route exact path="/admin" component={Index} />
+                    <Switch>
+                        <Route path="/member" component={MemberArea} />
+                        <Route path="/admin" component={AdminArea} />
+                        <Route path="/" component={Index} />
+                    </Switch>
                 </div>
             </BrowserRouter>
         )

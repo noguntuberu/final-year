@@ -65,6 +65,7 @@ module.exports = class GuestController {
                     payload: {
                         userId: userData._id,
                         name: userData.firstName + " " + userData.lastName,
+                        level: userData.level,
                         token: "unique token"
                     }
                 }

@@ -48,9 +48,20 @@
     padding: 10px;
 }
 
-.login-btn {
+select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 1px;
+}
+
+.login-btn, .reg-btn {
     padding: 10px;
     border: none;
     background: #03659e;
     color: #fff;
+}
+
+.reg-btn {
+    margin-top: 10px;
+    margin-bottom: 20px;
 }

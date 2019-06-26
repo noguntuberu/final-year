@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {connect} from 'react-redux';
 import {addDraft} from '../../store/action-creators/draft.ac';
-import {uploadPost, falsifyPostUploaded} from '../../store/action-creators/post.ac';
+import {uploadPost } from '../../store/action-creators/post.ac';
+import {updateProcessStatus} from '../../store/action-creators/process.ac';
 
 
 const NewPost = props => {
@@ -9,13 +10,33 @@ const NewPost = props => {
     let [postBody, setPostBody] = useState('');
     let [postAudience, setPostAudience] = useState('all');
     let [postImage, setPostImage] = useState();
-    let [postImageName, setPostImageName] = useState();
-    let [formMessage, setFormMessage] = useState();
-    let [alertClass, setAlertClass] = useState('');
+    let [postImageName, setPostImageName] = useState('');
+    let [formMessage, setFormMessage] = useState('');
+    let [alertClass, setAlertClass] = useState('d-none');
 
-    if (props.isUploaded && props.message !== formMessage) {
-        setFormMessage(props.message);
-    }
+    const {success, payload, updateUploadStatus} = props;
+    useEffect(() => {
+        if (payload !== formMessage) {
+
+            if(success && alertClass === 'd-none') {
+                setAlertClass('alert alert-success');
+            } else {
+                setAlertClass('alert alert-danger');
+            }
+
+            setFormMessage(payload);
+            setTimeout(() => {
+                setAlertClass('d-none');
+                updateUploadStatus({
+                    process: 'postUpload',
+                    body: {
+                        success: false,
+                        payload: ''
+                    }
+                });
+            }, 2000);
+        }
+    }, [alertClass, success, payload, formMessage, setFormMessage, updateUploadStatus]);
 
     const onChange = (type, value) => {
         switch(type) {
@@ -46,12 +67,13 @@ const NewPost = props => {
         if (postTitle.length >= 6 && postBody.length >= 10) {
             props.uploadPost(postTitle, postBody, postImage, postAudience);
         } else {
-            setFormMessage('Post must have a title and body');
-            setAlertClass('alert alert-danger');
-            setTimeout(() => {
-                setFormMessage('');
-                setAlertClass('');
-            }, 1500);
+            updateUploadStatus({
+                process: 'postUpload',
+                body: {
+                    success: false,
+                    payload: "Post Title and body can't be empty"
+                }
+            })
         }
     }
 
@@ -92,13 +114,13 @@ const NewPost = props => {
 }
 
 const mapStateToProps = state => ({
-    ...state.postUploadStat
+    ...state.processes.postUpload
 })
 
 const mapDispatchToProps = dispatch => ({
     saveDraft: (title, body, image, audience) => dispatch(addDraft(title, body, image, audience)),
     uploadPost: (title, body, image, audience) => dispatch(uploadPost(title, body, image, audience)),
-    falsifyPostUploaded: () => dispatch(falsifyPostUploaded())
+    updateUploadStatus: data => dispatch(updateProcessStatus(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

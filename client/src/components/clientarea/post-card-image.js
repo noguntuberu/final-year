@@ -8,14 +8,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
 
-const ImagePostCard = props => {
-    const {_id, title, mediaUri, body, viewCount, likeCount, dislikeCount, commentCount} = props.postData;
-    
+const ImagePostCard = ({user, postData}) => {
+    const {_id, title, mediaUri, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
+    const postUri = typeof(user) === 'number' && user === 0 ? 
+                    `/admin/post/analysis/${_id}` : `/member/post/${_id}`;
     return (
         <div className="card">
             <img src={mediaUri} className="card-img-top" alt="" />
             <div className="card-body">
-                <h3 className="card-title"><NavLink to={`/admin/account/post/analysis/${_id}`}>{title}</NavLink></h3>
+                <h3 className="card-title"><NavLink to={postUri}>{title}</NavLink></h3>
                 <p className="card-text">
                     {body.substring(0, 200) + '...'}
                 </p>

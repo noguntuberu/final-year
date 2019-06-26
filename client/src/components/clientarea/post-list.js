@@ -8,7 +8,8 @@ import './client-area.css'
 
 
 const PostList = props => {
-    const {loadPosts, posts} = props;
+    const {loadPosts, posts, level} = props;
+
     useEffect(() => {
         loadPosts();
         //console.log([props.posts]);
@@ -19,9 +20,9 @@ const PostList = props => {
         for (const postId in postList) {
             let post;
             if (postList[postId].mediaUri === null) {
-                post = <TextPostCard postData = {{...postList[postId]}} key={postId}/>
+                post = <TextPostCard user={level} postData = {{...postList[postId]}} key={postId}/>
             } else {
-                post = <ImagePostCard postData = {{...postList[postId]}} key={postId}/>
+                post = <ImagePostCard user={level} postData = {{...postList[postId]}} key={postId}/>
             }
             posts = [
                 ...posts,
@@ -38,7 +39,8 @@ const PostList = props => {
 }
 
 const mapStateToProps = state => ({
-    posts: {...state.posts}
+    posts: {...state.posts},
+    level: {...state.credential.level}
 })
 
 const mapDispatchToProps = dispatch => ({

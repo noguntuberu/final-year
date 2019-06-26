@@ -1,37 +1,55 @@
 import React, { useState, useEffect} from 'react';
-//import {NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import './index.css';
 import { connect } from 'react-redux';
-import {falsifyError} from '../../store/action-creators/error.ac';
+import { updateProcessStatus } from '../../store/action-creators/process.ac';
 
 
 const Login = props => {
     const [formMsg, setFormMsg] = useState(),
           [email, setEmail] = useState(""),
-          [password, setPassword] = useState();
+          [password, setPassword] = useState("");
+
     /** */
+    const {login, isLoggedIn, level, history, updateLoginStatus} = props;
+    const {payload} = props;
+
     useEffect(() => {
         //
-        if (props.isLoggedIn) {
-            props.history.push('/admin/account');
+        let path = level === 0 ? '/admin' : '/member';
+        if (isLoggedIn) {
+            history.push(path);
         }
-    });
+    }, [isLoggedIn, history, level]);
 
-
-    // 
-    if (props.error && props.error !== formMsg) {
-        setFormMsg(props.error);
-        props.falsify();
-    }
+    useEffect(() => {
+        if(payload !== formMsg) {
+            setFormMsg(payload);
+            setTimeout(() => {
+                updateLoginStatus({
+                    process: 'login',
+                    body: {
+                        success: false,
+                        payload: ""
+                    }
+                })
+            }, 2000);
+        }
+    }, [payload, formMsg, setFormMsg, updateLoginStatus])
 
     const onSubmit = (event) => {
         event.preventDefault();
 
         if (email.length < 1 || password.length < 1) {
-            setFormMsg("Please fill all fields");
-            setTimeout(() => setFormMsg(""), 2000);
+            updateLoginStatus({
+                process: 'login',
+                body: {
+                    success: false,
+                    payload: "Please, fill all fields"
+                }
+            })
         } else {
-            props.login(email, password); 
+            login(email, password); 
         }
 
     }
@@ -42,22 +60,25 @@ const Login = props => {
             <input name="email" type="email" placeholder="Email address" onInput = {e => setEmail(e.target.value)}/>
             <input name="password" type="password" placeholder="Password" onInput = {e => setPassword(e.target.value)}/>
             <input name="submit" type="submit" value="Login" className="login-btn"/>
+            <div style={{textAlign: "center"}}>
+                Not a Member? <NavLink to='/register' style = {{fontWeight: "bold"}}> Sign Up </NavLink>
+            </div>
         </form>
     )
 }
 
 const mapStateToProps = state => {
-    let {isLoggedIn} = state.credential;
-    let { error } = state;
+    let {isLoggedIn, level} = state.credential;
     return {
         isLoggedIn,
-        error: error.isNew ? error.message : ""
+        level,
+        ...state.processes.login      
     }
 }
 
 const matchDispatchToProps = dispatch => ({
     login: (email, password) => dispatch({type: 'LOGIN', payload: {email, password}}),
-    falsify: () => dispatch(falsifyError())
+    updateLoginStatus: data => dispatch(updateProcessStatus(data))
 })
 
 export default connect(mapStateToProps, matchDispatchToProps)(Login);

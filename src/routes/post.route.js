@@ -1,4 +1,6 @@
 const express = require('express');
+const util = require('util');
+const uploader = require('express-fileupload');
 const path = require('path');
 const Router = express.Router();
 const postModel = require('../models/post.model');
@@ -31,21 +33,47 @@ Router.get('/search/:keywords', async () => {
 
 //
 Router.post('/new', async (req, res) => {
-    if (req.files === undefined || req.files === null){
-        return res.status(400).json({msg: "No file"})
-    }
-
-    const image = req.files.image;
-    image.mv(path.resolve(`${__dirname}`, `../../client/admin/public/uploads/${image.name}`), async err => {
-        if (err) {
-            return res.status(500).send(err);
-        }
-
-        //
-        const mediaUri = image.name;
-        const result = await System.addNewPost({...req.body, mediaUri});
-        res.json(result);
-    });
+    image = req.files.image;
+    const mv = util.promisify(image.mv);
+    mv(path.resolve(`${__dirname}`, `../../client/public/uploads/${image.name}`))
+        .then(response => {
+            res.json(response);
+        })
+    // if (req.files === undefined || req.files === null){
+    //     const result = await System.addNewPost({...req.body, mediaUri: ""});
+    //     if(result) {
+    //         res.json({
+    //             success: true,
+    //             payload: "Post uploaded"
+    //         });
+    //     } else {
+    //         res.json({
+    //             success: false,
+    //             payload: "Post upload failed"
+    //         });
+    //     }
+    // } else {
+    //     const image = req.files.image;
+    //     image.mv(path.resolve(`${__dirname}`, `../../client/public/uploads/${image.name}`), async err => {
+    //         if (err) {
+    //             return res.status(500).send(err);
+    //         }
+            
+    //         const mediaUri = image.name;
+    //         const result = await System.addNewPost({...req.body, mediaUri});
+    //         if(result) {
+    //             res.json({
+    //                 success: true,
+    //                 payload: "Post uploaded"
+    //             });
+    //         } else {
+    //             res.json({
+    //                 success: false,
+    //                 payload: "Post upload failed"
+    //             });
+    //         }
+    //     });
+    // }
 })
 
 Router.post('/comment', async (req, res) => {

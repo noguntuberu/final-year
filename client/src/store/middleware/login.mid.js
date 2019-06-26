@@ -2,18 +2,24 @@
 import axios from 'axios';
 import server from './config';
 import { addCredential } from '../action-creators/credential.ac';
-import { addError } from '../action-creators/error.ac';
+import { updateProcessStatus } from '../action-creators/process.ac';
 
 export default store => next => action => {
     if(action.type === 'LOGIN') {
         let {email, password } = action.payload; 
         axios.post(server.host + '/user/login', {email, password})
             .then(response => {
-                if (response.data.success) {
-                    let {userId, name, token} = response.data.payload;
-                    next(addCredential({userId, name, token}));
+                const {success, payload} = response.data;
+                if (success) {
+                    next(addCredential(payload));
                 } else {
-                    next(addError(response.data.payload));
+                    store.dispatch(updateProcessStatus({
+                        process: 'login',
+                        body: {
+                            success: false,
+                            payload: payload
+                        }
+                    }))
                 }
             })  
             .catch(err => {
