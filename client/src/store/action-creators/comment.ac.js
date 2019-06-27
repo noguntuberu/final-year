@@ -1,11 +1,12 @@
 import {ADD_COMMENT, UPLOAD_COMMENT, LOAD_COMMENTS} from '../action-constants';
 
-export const addComment = ({id, postId, userName, dateCreated, score}) => ({
+export const addComment = ({_id, postId, userName, body, dateCreated, score}) => ({
     type: ADD_COMMENT,
     payload: {
-        id,
+        _id,
         postId,
         userName,
+        body,
         dateCreated,
         score
     }

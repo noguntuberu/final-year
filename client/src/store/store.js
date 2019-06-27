@@ -13,6 +13,7 @@ import loginMiddleware from './middleware/login.mid';
 import userRegistrationMiddleware from './middleware/register.mid';
 import postUploadMiddleware from './middleware/post-upload.mid';
 import postLoaderMiddleware from './middleware/load-post.mid';
+import commenUploaderMiddleware from './middleware/upload-comment.mid';
 import commentLoaderMiddleWare from './middleware/load-comments.mid';
 import postAnalysisMiddleware from './middleware/load-analysis.mid';
 
@@ -22,6 +23,7 @@ const store = createStore(reducer, initState, applyMiddleware(
     loginMiddleware,
     userRegistrationMiddleware,
     postLoaderMiddleware,
+    commenUploaderMiddleware,
     commentLoaderMiddleWare,
     postUploadMiddleware,
     postAnalysisMiddleware

@@ -76,8 +76,18 @@ Router.post('/new', async (req, res) => {
 })
 
 Router.post('/comment', async (req, res) => {
-    const result = await System.addComment({...req.body});
-    res.json(result);
+    // handle analysis
+    const score = Math.random();
+    const dateCreated = Date.now();
+    const result = await System.addComment({...req.body, score, dateCreated});
+    const user = System.getUser(req.body.userId);
+    if (result.success) {
+        result.payload = {
+            ...System.getComment(req.body.postId, result.payload),
+            userName: user.firstName + " " +user.lastName 
+        }
+    }
+    res.send(result);
 })
 
 //

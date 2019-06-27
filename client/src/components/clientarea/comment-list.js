@@ -8,22 +8,34 @@ import { loadComments } from '../../store/action-creators/comment.ac';
 
 const CommentList = props => {
     const {comments, postId, loadPostComments } = props;
-    const [commentList, setCommentList] = useState(comments[postId]);
+
+    const [commentList, setCommentList] = useState([]);
 
     useEffect(() => {
         loadPostComments(postId)
-    }, [postId, loadPostComments])
+    }, [postId, loadPostComments]);
+
+    useEffect(() => {
+        setCommentList(loadCommentList(comments[postId]))
+    }, [postId, comments, setCommentList]);
 
     const loadCommentList = list => {
-        
+        let loadedComments = [];
+        for (const commentId in list) {
+            loadedComments = [
+                ...loadedComments,
+                <CommentItem commentData={list[commentId]} key={commentId} />
+            ]
+        }
+        return loadedComments;
     }
     return (
         <div className="card comment-list">
-            <h3> Comments </h3>
+            <h3> Comments</h3>
             <div>
-                <CommentItem />
+                {commentList}
             </div>
-            <CommentForm />
+            <CommentForm postId={postId}/>
         </div>
     )
 }

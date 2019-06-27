@@ -47,6 +47,9 @@ class System {
     getUsers() {
         return this.users;        
     }
+    getUser(userId) {
+        return this.users[userId];
+    }
 
     addUserToList(userInfo) {
         this.users = {
@@ -205,6 +208,9 @@ class System {
     /**
      * @COMMENTS_CONTROLLER
      */
+    getComment(postId, commentId) {
+        return this.comments[postId][commentId];
+    }
     getPostComments(postId) {
         return this.comments[postId];
     }

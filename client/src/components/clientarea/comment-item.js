@@ -1,15 +1,17 @@
 import React from 'react';
 
 
-const CommentItem = ({id}) => {
+const CommentItem = props => {
+    const {_id, userName, body} = props.commentData;
+
     return (
         <div className="comment-item">
             <div className="comment-item-img">
-                {id}
+                
             </div>
             <div className="comment-item-body">
-                <h5> Matt D. Hummels </h5>
-                <p>I don't think that's a good cup of coffee!</p>
+                <h5> {userName} </h5>
+                <p>{body}</p>
             </div>
         </div>
     )
