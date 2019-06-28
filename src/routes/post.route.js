@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const Router = express.Router();
 const postModel = require('../models/post.model');
+const Analyzer = require('../controllers/analyzer.control');
 
 //
 const System = require('../controllers/system.control');
@@ -77,17 +78,24 @@ Router.post('/new', async (req, res) => {
 
 Router.post('/comment', async (req, res) => {
     // handle analysis
-    const score = Math.random();
-    const dateCreated = Date.now();
-    const result = await System.addComment({...req.body, score, dateCreated});
-    const user = System.getUser(req.body.userId);
-    if (result.success) {
-        result.payload = {
-            ...System.getComment(req.body.postId, result.payload),
-            userName: user.firstName + " " +user.lastName 
-        }
+    let result;
+    try {
+        result = await Analyzer.analyzeTextSentiment(req.body);
+    } catch(err) {
+        result = err;
     }
-    res.send(result);
+
+    res.json(result);
+    // const dateCreated = Date.now();
+    // const result = await System.addComment({...req.body, dateCreated});
+    // const user = System.getUser(req.body.userId);
+    // if (result.success) {
+    //     result.payload = {
+    //         ...System.getComment(req.body.postId, result.payload),
+    //         userName: user.firstName + " " +user.lastName 
+    //     }
+    // }
+    // res.send(result);
 })
 
 //

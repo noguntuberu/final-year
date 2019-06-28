@@ -5,13 +5,19 @@ import { LOAD_COMMENTS } from '../action-constants';
 
 export default state => next => action => {
     if (action.type === LOAD_COMMENTS) {
-        axios.get(`${server.host}/post/comment/${action.payload}`)
-            .then(response => {
-                console.log(response);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        axios.get(
+            `${server.host}/post/comment/${action.payload}`,
+            {
+                headers: {
+                'Access-Control-Allow-Origin' : '*'
+                }
+            }
+        ).then(response => {
+            console.log(response);
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     next(action);

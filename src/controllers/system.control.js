@@ -30,6 +30,7 @@ class System {
         this.posts = {};
         this.comments = {};
         this.postStats = {};
+        this.commentScores = {};
     }
 
     convertToJSON(data) {
@@ -221,8 +222,13 @@ class System {
             [data._id]: data
         }
     }
-
-    async addComment(data) {
+    async setCommentScore(commentData, analysisResult) {
+        return commentData = {
+            ...commentData,
+            score: analysisResult.polarity_confidence
+        }
+    }
+    async addComment(data, analyzer) {
         const Comment = new this.comment;
         const result = await Comment.createDatabaseRecord(data);
         if(result.success) {

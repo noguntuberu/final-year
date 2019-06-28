@@ -18,12 +18,16 @@ export default store => next => action => {
         formData.append('userId', userId);
 
         //
-        axios.post(server.host + '/post/new', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        axios.post(
+            server.host + '/post/new', 
+            formData, 
+            {
+                headers: {
+                    'Access-Control-Allow-Origin' : '*',
+                    'Content-Type': 'multipart/form-data'
+                }
             }
-        })
-        .then(response => {
+        ).then(response => {
             const data = response.data;
             if (data.success) {
                 store.dispatch(addPost(data.payload));
