@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import TextPostCard from './post-card-text';
 import ImagePostCard from './post-card-image';
@@ -6,10 +6,18 @@ import CommentList from './comment-list';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
+import { incrementPostView } from '../../store/action-creators/post.ac';
+
 
 
 const DetailedPost = props => {
     const id = props.match.params.id;
+    const { incrementView } = props;
+
+    useEffect(() => {
+        incrementView(id)
+    }, [id, incrementView])
+
     return (
         <div>
             {
@@ -25,7 +33,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-
+    incrementView : postId => dispatch(incrementPostView(postId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DetailedPost);

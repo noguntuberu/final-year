@@ -1,7 +1,10 @@
 /**
  * @author Oguntuberu Nathan O.
  */
-import { ADD_POST, ADD_LOADED_POSTS, FALSIFY_POST_UPLOADED, ADD_POST_UPLOAD_STAT, LOAD_POSTS, UPLOAD_POST } from '../action-constants';
+import { ADD_POST, ADD_LOADED_POSTS, FALSIFY_POST_UPLOADED, 
+        ADD_POST_UPLOAD_STAT, LOAD_POSTS, UPLOAD_POST, 
+        INCREMENT_VIEW } from '../action-constants';
+
 export const loadPosts = () => ({
     type: LOAD_POSTS
 })
@@ -39,4 +42,9 @@ export const addPostUploadStat = (isUploaded, message ) => ({
         isUploaded,
         message
     }
+})
+
+export const incrementPostView = postId => ({
+    type: INCREMENT_VIEW,
+    payload: postId
 })

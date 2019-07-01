@@ -134,14 +134,21 @@ class System {
         return false;
     }
 
+    getPostForReduxStore(postId) {
+        return {
+            ...this.postStats[postId],
+            ...this.posts[postId]
+        }
+    }
+
     reducePostsAndStatsForReduxStore() {
         let reducedPosts = {};
         for (const postId in this.posts) {
             reducedPosts = {
                 ...reducedPosts,
                 [postId] : {
-                    ...this.posts[postId],
-                    ...this.postStats[postId]
+                    ...this.postStats[postId],
+                    ...this.posts[postId]
                 }
             }
         }

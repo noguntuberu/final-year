@@ -7,7 +7,7 @@ export default (state = {}, action) => {
             return {
                 ...state,
                 [action.payload._id]: {...action.payload}
-            }
+            } 
         case ADD_LOADED_POSTS:
             return {
                 ...action.payload

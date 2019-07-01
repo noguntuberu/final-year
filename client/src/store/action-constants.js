@@ -10,6 +10,7 @@ export const ADD_POST = 'ADD_POST';
 export const LOAD_POSTS = 'LOAD_POSTS';
 export const UPLOAD_POST = 'UPLOAD_POST';
 export const ADD_LOADED_POSTS = 'ADD_LOADED_POSTS';
+export const INCREMENT_VIEW = 'INCREMENT_POST_VIEW';
 
 
 export const ADD_POST_ANALYSIS = 'ADD_POST_ANALYSIS';

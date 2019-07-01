@@ -14,8 +14,7 @@ export default store => next => action => {
                 }
             }
         ).then(response => {
-            console.log(response.data);
-            next(addLoadedPosts(response.data));
+            store.dispatch(addLoadedPosts(response.data));
         })
         .catch(err => {
             console.error(err);

@@ -104,7 +104,8 @@ Router.post('/comment', async (req, res) => {
 //
 Router.put('/view/:id', async (req, res) => {
     const postId = req.params.id;
-    res.json(System.incrementPostViewCount(postId));
+    System.incrementPostViewCount(postId);
+    res.json(System.getPostForReduxStore(postId));
 })
 
 Router.put('/stat', async (req, res) => {
