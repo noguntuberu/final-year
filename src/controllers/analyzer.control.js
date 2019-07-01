@@ -21,8 +21,6 @@ class EOMSAnalyzer {
         
         if (analysisResult.polarity === "negative"){
             return (-1) * analysisResult.polarity_confidence;
-        } else if (analysisResult.polarity === "neutral") {
-            return 0
         } else {
             return analysisResult.polarity_confidence;
         }

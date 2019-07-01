@@ -26,6 +26,7 @@ export const FALSIFY_ERROR = 'FALSIFY_ERROR';
 export const ADD_DRAFT = 'ADD_DRAFT';
 
 export const ADD_COMMENT = 'ADD_COMMENT';
+export const ADD_BATCH_COMMENTS = 'ADD_BATCH_COMMENTS';
 export const LOAD_COMMENTS = 'LOAD_COMMENTS';
 export const UPLOAD_COMMENT = 'UPLOAD_COMMENT';
 

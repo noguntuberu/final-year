@@ -1,9 +1,9 @@
 import axios from 'axios';
 import server from './config';
-import { addComment } from '../action-creators/comment.ac';
+import { addBatchComments } from '../action-creators/comment.ac';
 import { LOAD_COMMENTS } from '../action-constants';
 
-export default state => next => action => {
+export default store => next => action => {
     if (action.type === LOAD_COMMENTS) {
         axios.get(
             `${server.host}/post/comment/${action.payload}`,
@@ -13,7 +13,9 @@ export default state => next => action => {
                 }
             }
         ).then(response => {
-            console.log(response);
+            const postId = action.payload;
+            const comments = {...response.data};
+            store.dispatch(addBatchComments(postId, comments));
         })
         .catch(err => {
             console.log(err);

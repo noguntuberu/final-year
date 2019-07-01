@@ -15,26 +15,25 @@ export default store => next => action => {
                 }
             }
         ).then(response => {
-            console.log(response.data);
-            // const {success, payload } = response.data;
-            // if (success) {
-            //     store.dispatch(addComment(payload))
-            //     store.dispatch(updateProcessStatus({
-            //         process: 'comment',
-            //         body: {
-            //             success: true, 
-            //             payload: "Successful"
-            //         }
-            //     }))
-            // } else {
-            //     store.dispatch(updateProcessStatus({
-            //         process: 'comment',
-            //         body: {
-            //             success: false, 
-            //             payload: "failed"
-            //         }
-            //     }))
-            // }
+            const {success, payload } = response.data;
+            if (success) {
+                store.dispatch(addComment(payload))
+                store.dispatch(updateProcessStatus({
+                    process: 'comment',
+                    body: {
+                        success: true, 
+                        payload: "Successful"
+                    }
+                }))
+            } else {
+                store.dispatch(updateProcessStatus({
+                    process: 'comment',
+                    body: {
+                        success: false, 
+                        payload: "failed"
+                    }
+                }))
+            }
         })
         .catch(err => {
             console.error(err);

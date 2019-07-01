@@ -1,4 +1,4 @@
-import { ADD_COMMENT } from "../action-constants";
+import { ADD_COMMENT, ADD_BATCH_COMMENTS } from "../action-constants";
 
 /**
  * 
@@ -14,6 +14,11 @@ export default (state = {}, action) => {
                     ...state[action.payload.postId],
                     [action.payload._id]: {...action.payload}
                 }
+            }
+        case ADD_BATCH_COMMENTS :
+            return {
+                ...state,
+                ...action.payload
             }
         default:
             return state;

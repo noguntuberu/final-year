@@ -30,8 +30,9 @@ Router.get('/analysis/:id', async(req, res) => {
 
 Router.get('/comment/:postId', async (req, res) => {
     const postId = req.params.postId;
-    const result = await System.getPostComments(postId);
-    res.send(result);
+    const comments = await System.getPostComments(postId);
+
+    res.send(comments);
 })
 
 Router.get('/search/:keywords', async (req, res) => {
@@ -78,24 +79,26 @@ Router.post('/new', async (req, res) => {
 
 Router.post('/comment', async (req, res) => {
     // handle analysis
-    let result;
     try {
-        result = await Analyzer.analyzeTextSentiment(req.body);
-    } catch(err) {
-        result = err;
-    }
+        const score = await Analyzer.analyzeTextSentiment(req.body);
+        const dateCreated = Date.now();
 
-    res.json(result);
-    // const dateCreated = Date.now();
-    // const result = await System.addComment({...req.body, dateCreated});
-    // const user = System.getUser(req.body.userId);
-    // if (result.success) {
-    //     result.payload = {
-    //         ...System.getComment(req.body.postId, result.payload),
-    //         userName: user.firstName + " " +user.lastName 
-    //     }
-    // }
-    // res.send(result);
+        const result = await System.addComment({...req.body, score, dateCreated});
+        const user = System.getUser(req.body.userId);
+        
+        if (result.success) {
+            result.payload = {
+                ...System.getComment(req.body.postId, result.payload),
+                userName: user.firstName + " " +user.lastName 
+            }
+        }
+        res.send(result);
+    } catch(err) {
+        return res.status(500).json({
+            success: false,
+            payload: "Server Error"
+        })
+    }
 })
 
 //

@@ -23,8 +23,8 @@ const store = createStore(reducer, initState, applyMiddleware(
     loginMiddleware,
     userRegistrationMiddleware,
     postLoaderMiddleware,
-    commenUploaderMiddleware,
     commentLoaderMiddleWare,
+    commenUploaderMiddleware,
     postUploadMiddleware,
     postAnalysisMiddleware
 ));

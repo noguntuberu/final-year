@@ -213,7 +213,21 @@ class System {
         return this.comments[postId][commentId];
     }
     getPostComments(postId) {
-        return this.comments[postId];
+        const comments =  this.comments[postId];
+        let processedComments  = {};
+        for(const commentId in comments) {
+            const userId = comments[commentId].userId;
+            const user = this.getUser(userId);
+            processedComments = {
+                ...processedComments,
+                [commentId] : {
+                    ...comments[commentId],
+                    userName: user.firstName + " " + user.lastName 
+                }
+            }
+        }
+
+        return processedComments;
     }
 
     addCommentToList(data) {
@@ -222,13 +236,8 @@ class System {
             [data._id]: data
         }
     }
-    async setCommentScore(commentData, analysisResult) {
-        return commentData = {
-            ...commentData,
-            score: analysisResult.polarity_confidence
-        }
-    }
-    async addComment(data, analyzer) {
+
+    async addComment(data) {
         const Comment = new this.comment;
         const result = await Comment.createDatabaseRecord(data);
         if(result.success) {
