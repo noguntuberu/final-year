@@ -5,8 +5,9 @@ import { ADD_POST, ADD_LOADED_POSTS, FALSIFY_POST_UPLOADED,
         ADD_POST_UPLOAD_STAT, LOAD_POSTS, UPLOAD_POST, 
         INCREMENT_VIEW } from '../action-constants';
 
-export const loadPosts = () => ({
-    type: LOAD_POSTS
+export const loadPosts = userId => ({
+    type: LOAD_POSTS,
+    payload: userId
 })
 
 export const addLoadedPosts = (posts) => ({

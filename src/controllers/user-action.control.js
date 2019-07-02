@@ -16,6 +16,20 @@ module.exports = class UserActionController {
           return this.info;
      }
 
+     async fetchRecordsForUser(userId) {
+          return JSON.parse(JSON.stringify(
+               await this.userActionModel.readAllRecordsForUser(userId)
+          ));
+     }
+
+     async doesRecordExist(userId, postId) {
+          const result = await this.userActionModel.readRecord(userId, postId);
+          if (result) {
+               return true;
+          }
+          return false;
+     }
+
      async createDatabaseRecord(userId, postId, like = false, dislike = false) {
           const result = await this.userActionModel.createRecord({userId , postId, like, dislike});
           if (result) {

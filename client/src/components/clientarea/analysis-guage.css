@@ -8,6 +8,7 @@
 }
 .guage-outer-bar {
     height: 30px;
+    border: 1px solid #ddd;
     border-radius: 5px;
     background: linear-gradient(to right, red, yellow, rgb(6, 219, 6));
 }

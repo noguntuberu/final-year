@@ -158,6 +158,83 @@ class System {
 
     /**
      * 
+     * @USER_ACTION_CONTROLLER
+     */
+    async reactToPost(actionData) {
+        this.updateLikeDislikeCounts(actionData);
+        const refinedData = this.refineUserActionDataForDatabase(actionData);
+        if (this.updateUserAction(refinedData)) {
+            return {
+                success: true,
+                payload: {
+                    posts: this.reducePostsAndStatsForReduxStore(),
+                    userAction: refinedData
+                }
+            }
+        }
+
+        return {
+            success: false,
+            payload: null
+        }
+    }
+
+    refineUserActionDataForDatabase(rawActionData) {
+        if (rawActionData.like === 1) {
+            return {
+                ...rawActionData,
+                like: true,
+                dislike: false
+            }
+        } else if (rawActionData.dislike === 1) {
+            return {
+                ...rawActionData,
+                like: false,
+                dislike: true
+            }
+        }
+
+        return {
+            ...rawActionData,
+            like: false,
+            dislike: false
+        }
+    }
+
+    async fetchUserActions(userId) {
+        const UserAction = new this.userAction;
+        const userActions = await UserAction.fetchRecordsForUser(userId);
+        const objectifiedActions = {};
+        userActions.forEach(action => {
+            objectifiedActions = {
+                ...objectifiedActions,
+                action
+            }
+        })
+
+        return objectifiedActions;
+    }
+
+    async updateUserAction(actionData) {
+        const UserAction = new this.userAction;
+        let actionSaveResult;
+        if (UserAction.doesRecordExist(actionData.userId, actionData.postId)) {
+            actionSaveResult = await UserAction.saveToDatabase(actionData);
+            if (actionSaveResult.success) {
+                return true;
+            }
+            return false;
+        }
+        const {userId, postId, like, dislike} = actionData;
+        actionSaveResult = await UserAction.createDatabaseRecord(userId, postId, like, dislike);
+        if(actionSaveResult.success) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 
      * @POST_STATS_CONTROLLER
      */
 

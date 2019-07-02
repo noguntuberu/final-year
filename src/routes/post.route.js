@@ -11,8 +11,13 @@ const System = require('../controllers/system.control');
 
 
 
-Router.get('/', async (req, res) => {
-    res.json(System.reducePostsAndStatsForReduxStore());    
+Router.get('/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    const result = {
+        posts : System.reducePostsAndStatsForReduxStore(),
+        userActions: await System.fetchUserActions(userId)
+    }
+    res.json(result);    
 })
 
 Router.get('/:id', async (req, res) => {
@@ -109,7 +114,8 @@ Router.put('/view/:id', async (req, res) => {
 })
 
 Router.put('/stat', async (req, res) => {
-    res.send(System.updateLikeDislikeCounts({...req.body}));
+    const actionData = req.body;
+    res.send(await System.reactToPost(actionData));
 })
 
 //

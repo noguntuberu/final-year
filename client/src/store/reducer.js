@@ -11,6 +11,7 @@ import groupAnalysis from './reducers/group-analysis';
 import postDraft from './reducers/draft';
 import credential from './reducers/credential';
 import processes from './reducers/processes';
+import userAction from './reducers/user-action';
 
 export default combineReducers({
     posts,
@@ -19,5 +20,6 @@ export default combineReducers({
     credential,
     postAnalysis,
     groupAnalysis,
-    postDraft
+    postDraft,
+    userAction
 })

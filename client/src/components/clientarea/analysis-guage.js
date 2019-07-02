@@ -3,7 +3,7 @@ import './analysis-guage.css';
 
 
 const AnalysisGuage = ({title, score}) => {
-    score = score <= 0 ? 101: score;
+    score = score <= 0 ? 101: 100 - score;
     const innerGuageStyle = {
         borderRadius: "5px",
         padding: "2.5px 5px 0 5px",
@@ -21,7 +21,7 @@ const AnalysisGuage = ({title, score}) => {
             <div className="guage-wrapper">
                 <div className="d-flex justify-content-end guage-outer-bar">
                     <div className="guage-inner-bar h-flex" style={innerGuageStyle}>
-                        {score === 101? 0 : score } %
+                        {score === 101? 0 : Math.round(100 - score) } %
                     </div>
                 </div>
             </div>

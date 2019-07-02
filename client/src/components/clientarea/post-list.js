@@ -8,10 +8,10 @@ import './client-area.css'
 
 
 const PostList = props => {
-    const {loadPostsForDisplay, posts, level} = props;
+    const {userId, loadPostsForDisplay, posts, level} = props;
     useEffect(() => {
-        loadPostsForDisplay();
-    }, [loadPostsForDisplay]);
+        loadPostsForDisplay(userId);
+    }, [userId, loadPostsForDisplay]);
 
     const [userClass, setUserClass] = useState('member');
     const [postPath, setPostPath] = useState('member/post');
@@ -46,13 +46,14 @@ const PostList = props => {
 }
 
 const mapStateToProps = state => ({
+    userId: state.credential.userId,
     posts: {...state.posts},
     level: state.credential.level
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadPostsForDisplay : () => {
-        dispatch(loadPosts());
+    loadPostsForDisplay : userId => {
+        dispatch(loadPosts(userId));
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PostList);

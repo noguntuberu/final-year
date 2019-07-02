@@ -1,5 +1,5 @@
 
-import { ADD_POST, ADD_LOADED_POSTS } from "../action-constants";
+import { ADD_POST, ADD_LOADED_POSTS  } from "../action-constants";
 
 export default (state = {}, action) => {
     switch(action.type) {

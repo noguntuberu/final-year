@@ -17,6 +17,7 @@ import commenUploaderMiddleware from './middleware/upload-comment.mid';
 import commentLoaderMiddleWare from './middleware/load-comments.mid';
 import postAnalysisMiddleware from './middleware/load-analysis.mid';
 import incrementPostViewMiddleware from './middleware/increment-view.mid';
+import updateUserActionMiddleware from './middleware/user-action.mid';
 
 const initState = storePersister.initializeStore();
 
@@ -28,7 +29,8 @@ const store = createStore(reducer, initState, applyMiddleware(
     commentLoaderMiddleWare,
     commenUploaderMiddleware,
     postUploadMiddleware,
-    postAnalysisMiddleware
+    postAnalysisMiddleware,
+    updateUserActionMiddleware
 ));
 
 // STORE SUBSCRIBERS
