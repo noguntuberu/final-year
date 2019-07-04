@@ -25,7 +25,7 @@ Router.get('/:id', async (req, res) => {
 })
 
 Router.get('/analysis/:id', async(req, res) => {
-    res.send({
+    res.json({
         postAnalysis: System.performOverallAnalysisForPost(req.params.id),
         groupAnalysis: {
             gender: System.performGenderAnalysisForPost(req.params.id)

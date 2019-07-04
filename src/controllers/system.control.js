@@ -358,19 +358,14 @@ class System {
      */
     //
     performOverallAnalysisForPost(postId) {
-        let totalNegativeScore = 0,
-            totalPositiveScore = 0;
+        let actualTotalScore = 0,
+            expectedTotalScore = 0;
         
         for (const commentId in this.comments[postId]) {
-            const comment = this.comments[postId][commentId];
-            //
-            if (comment.score < 0) {
-                totalNegativeScore += comment.score;
-            } else {
-                totalPositiveScore += comment.score;
-            }
+            actualTotalScore += this.comments[postId][commentId].score + 1;
+            expectedTotalScore += 2;
         }
-        return this.analyzer.analyze(totalNegativeScore, totalPositiveScore);
+        return this.analyzer.analyze(actualTotalScore, expectedTotalScore);
     }
 
     /**
@@ -384,15 +379,15 @@ class System {
         }
     }
     performGenderAnalysisForPost(postId) {
-        let maleNegativeScore = 0, 
-            malePositiveScore = 0,
+        let maleActualScore = 0, 
+            maleExpectedScore = 0,
             maleTotalScore = 0,
-            femaleNegativeScore = 0,
-            femalePositiveScore = 0,
+            femaleActualScore = 0,
+            femaleExpectedScore = 0,
             femaleTotalScore = 0,
-            nuetNegativeScore = 0,
-            nuetPositiveScore = 0,
-            nuetTotalScore = 0;
+            neutralActualScore = 0,
+            neutralExpectedScore = 0,
+            neutralTotalScore = 0;
         //
 
         // GET negative and positive scores for each gender
@@ -401,34 +396,25 @@ class System {
                   user = this.users[comment.userId];
             if (user) {
                 if (user.gender === 'M') {
-                    if (comment.score < 0) {
-                        maleNegativeScore += comment.score;
-                    } else {
-                        malePositiveScore += comment.score;
-                    }
+                    maleActualScore += comment.score + 1;
+                    maleExpectedScore += 2;
                 }else if (user.gender === 'F') {
-                    if (comment.score < 0) {
-                        femaleNegativeScore += comment.score;
-                    } else {
-                        femalePositiveScore += comment.score;
-                    }
+                    femaleActualScore += comment.score + 1;
+                    femaleExpectedScore += 2;
                 }else {
-                    if (comment.score < 0) {
-                        nuetNegativeScore += comment.score;
-                    } else {
-                        nuetPositiveScore += comment.score;
-                    }
+                    neutralActualScore += comment.score + 1;
+                    neutralExpectedScore += 2;
                 }
             }
         }
         
-        maleTotalScore = this.analyzer.analyze(maleNegativeScore, malePositiveScore);
-        femaleTotalScore = this.analyzer.analyze(femaleNegativeScore, femalePositiveScore);
-        nuetTotalScore = this.analyzer.analyze(nuetNegativeScore, nuetPositiveScore);
+        maleTotalScore = this.analyzer.analyze(maleActualScore, maleExpectedScore);
+        femaleTotalScore = this.analyzer.analyze(femaleActualScore, femaleExpectedScore);
+        neutralTotalScore = this.analyzer.analyze(neutralActualScore, neutralExpectedScore);
         return {
             "Male": maleTotalScore,
             "Female": femaleTotalScore,
-            "Neutral": nuetTotalScore
+            "Neutral": neutralTotalScore
         }
     }
 }

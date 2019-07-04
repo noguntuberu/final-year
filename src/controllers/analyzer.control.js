@@ -5,8 +5,9 @@
 const aylien = require('aylien_textapi');
 class EOMSAnalyzer {
 
-    analyze(negativeScore, positiveScore) {
-        return negativeScore + positiveScore;
+    analyze(actualScore, expectedScore) {
+        const result = (actualScore / expectedScore) * 100;
+        return Math.round(result) > 0 ? Math.round(result): 0;
     }
 
     async analyzeTextSentiment(commentData) {

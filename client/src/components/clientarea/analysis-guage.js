@@ -3,14 +3,16 @@ import './analysis-guage.css';
 
 
 const AnalysisGuage = ({title, score}) => {
-    score = score <= 0 ? 101: 100 - score;
+    const lowScore = score <= 5 ? score + '%': '';
+    const highScore = score > 5? score + '%': '';
+
     const innerGuageStyle = {
         borderRadius: "5px",
         padding: "2.5px 5px 0 5px",
-        width: score + "%",
+        width: score <= 0? '101%' : (100 - score) + '%',
 
-        backgroundColor: score === 101? "red" : "white",
-        color: score === 101? "white" : "black",
+        backgroundColor: score <= 0 ? "red" : "white",
+        color: score <= 0 ? "white" : "black",
         fontWeight: "bold"
     }
     return (
@@ -20,8 +22,9 @@ const AnalysisGuage = ({title, score}) => {
             </div>
             <div className="guage-wrapper">
                 <div className="d-flex justify-content-end guage-outer-bar">
+                    {highScore}
                     <div className="guage-inner-bar h-flex" style={innerGuageStyle}>
-                        {score === 101? 0 : Math.round(100 - score) } %
+                        {lowScore}
                     </div>
                 </div>
             </div>

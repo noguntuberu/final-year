@@ -16,7 +16,7 @@ export default store => next => action => {
             }
         ).then(response => {
             const {postAnalysis, groupAnalysis} = response.data;
-
+            console.log(groupAnalysis);
             store.dispatch(addGroupAnalysis({
                 postId: action.payload,
                 body: groupAnalysis
