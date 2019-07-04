@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {NavLink} from 'react-router-dom';
 import { connect } from 'react-redux';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import Comment from '@material-ui/icons/Comment';
 import Visibility from '@material-ui/icons/Visibility';
+import { activeIcon, inactiveIcon } from './post-card-style';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
@@ -16,28 +17,55 @@ const ImagePostCard = props => {
     const {postId, title, mediaUri, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
     const postUri = `/${postPath}/${postId}`;
 
-    const getPostActionStat = () => {
+    const [action, setAction] = useState({userId, postId});
+    const [likeIconStyle, setLikeIconStyle] = useState(inactiveIcon);
+    const [dislikeIconStyle, setDislikeIconStyle] = useState(inactiveIcon);
+    useEffect(() => {
         if (actionStat[postId] === undefined) {
-            return {
-                userId, postId, like: false, dislike: false
-            }
+            setAction({
+                ...action, like: false, dislike: false
+            })
+        } else {
+            setAction({
+                ...action, ...actionStat[postId]
+            });
+        }
+    },[])
+
+    useEffect(() => {
+        if (action.like && likeIconStyle.color === '#aaaaaa') {
+            setLikeIconStyle(activeIcon);
+            setDislikeIconStyle(inactiveIcon);
         }
 
-        return actionStat[postId];
-    }
+        if (action.dislike && dislikeIconStyle.color === '#aaaaaa') {
+            setDislikeIconStyle(activeIcon);
+            setLikeIconStyle(inactiveIcon);
+        }
+        console.log('called');
+    }, [action, likeIconStyle, dislikeIconStyle, setDislikeIconStyle, setLikeIconStyle])
 
     const likePost = () => {
-        console.log('like')
-        const action = getPostActionStat();
         const {like, dislike} = action;
         if (like === false) {
             if (dislike) {
+                setAction({
+                    ...action,
+                    like: true,
+                    dislike: false
+                });
+
                 dispatchAction({
                     ...action,
                     like: 1,
                     dislike: -1
                 })
             } else {
+                setAction({
+                    ...action,
+                    like: true
+                });
+
                 dispatchAction({
                     ...action,
                     like: 1, 
@@ -45,6 +73,11 @@ const ImagePostCard = props => {
                 })
             }
         } else {
+            setAction({
+                ...action,
+                like: false,
+                dislike: false
+            });
             dispatchAction({
                 ...action,
                 like: -1,
@@ -54,11 +87,14 @@ const ImagePostCard = props => {
     }
 
     const dislikePost = () => {
-        console.log('dislike');
-        const action = getPostActionStat();
         const {like, dislike} = action;
         if (dislike === false) {
             if (like) {
+                setAction({
+                    ...action,
+                    like: false,
+                    dislike: true
+                });
                 dispatchAction({
                     userId,
                     postId,
@@ -66,6 +102,10 @@ const ImagePostCard = props => {
                     dislike: 1
                 })
             } else {
+                setAction({
+                    ...action,
+                    dislike: true
+                });
                 dispatchAction({
                     userId, 
                     postId, 
@@ -74,6 +114,11 @@ const ImagePostCard = props => {
                 })
             }
         } else {
+            setAction({
+                ...action,
+                like: false,
+                dislike: false
+            });
             dispatchAction({
                 ...action,
                 like: 0,
@@ -81,7 +126,6 @@ const ImagePostCard = props => {
             })
         }
     }
-
     return (
         <div className="card">
             <img src={'/uploads/'+mediaUri} className="card-img-top" alt="" />
@@ -92,19 +136,19 @@ const ImagePostCard = props => {
                 </p>
                 <div className="card-actions d-flex justify-content-start">
                     <div className="post-action-group">
-                       <div ><Visibility /> </div>
+                       <div style={inactiveIcon} ><Visibility /> </div>
                        <div className="stat-count">{viewCount}</div>
                     </div>
                     <div className="post-action-group">
-                       <div onClick={likePost} ><ThumbUp /></div> 
+                       <div onClick={likePost} style={likeIconStyle}><ThumbUp /></div> 
                        <div className="stat-count">{likeCount}</div>
                     </div>
                     <div className="post-action-group">
-                       <div><ThumbDown onClick={dislikePost}/> </div>
+                       <div style={dislikeIconStyle} onClick={dislikePost}><ThumbDown /> </div>
                        <div className="stat-count">{dislikeCount}</div>
                     </div>
                     <div className="post-action-group">
-                       <div><Comment /></div>
+                       <div style={inactiveIcon}><Comment /></div>
                        <div className="stat-count">{commentCount}</div>
                     </div>
                 </div>

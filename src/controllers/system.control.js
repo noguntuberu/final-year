@@ -279,11 +279,13 @@ class System {
     }
 
     updateLikeDislikeCounts(data) {
-
+        const newLikeCount = this.postStats[data.postId].likeCount + parseInt(data.like);
+        const newDislikeCount = this.postStats[data.postId].dislikeCount + parseInt(data.dislike);
+        
         this.postStats[data.postId] = {
             ...this.postStats[data.postId],
-            likeCount: this.postStats[data.postId].likeCount + parseInt(data.like),
-            dislikeCount: this.postStats[data.postId].dislikeCount + parseInt(data.dislike),
+            likeCount: newLikeCount <= 0 ? 0 : newLikeCount ,
+            dislikeCount: newDislikeCount <= 0 ? 0 : newDislikeCount,
         }
 
         return this.postStats[data.postId];
