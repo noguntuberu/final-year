@@ -115,7 +115,8 @@ Router.put('/view/:id', async (req, res) => {
 
 Router.put('/stat', async (req, res) => {
     const actionData = req.body;
-    res.send(await System.reactToPost(actionData));
+    const statUpdateResult = await System.reactToPost(actionData);
+    res.send(statUpdateResult);
 })
 
 //

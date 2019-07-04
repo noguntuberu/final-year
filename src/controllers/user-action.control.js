@@ -46,8 +46,8 @@ module.exports = class UserActionController {
           }
      }
 
-     async saveToDatabase() {
-          const result = await this.userActionModel.updateRecord(this.info);
+     async saveToDatabase(data) {
+          const result = await this.userActionModel.updateRecord(data);
           if (result.ok) {
                return {
                     success: true,

@@ -49,10 +49,5 @@ app.use('/post', PostRoute);
 // Start Server
 app.listen(port = process.env.PORT || 3000, async () => {
     // Load up System resources from database
-    setInterval(async () => {
-        await System.loadUsersFromDatabase();
-        await System.loadPostsFromDatabase();
-        await System.loadPostStatsFromDatabase();
-        await System.loadCommentsFromDatabase();
-    }, 2000);
+    System.init();
 });

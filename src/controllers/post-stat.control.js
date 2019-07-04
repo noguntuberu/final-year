@@ -44,8 +44,8 @@ module.exports = class PostStatController {
         return await this.postStatModel.readAllRecords();
     }
 
-    async saveToDatabase() {
-        const result = await this.postStatModel.updateRecord(this.info);
+    async saveToDatabase(data) {
+        const result = await this.postStatModel.updateRecord(data);
         if (result.ok) {
             return {
                 success: true,

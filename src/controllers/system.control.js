@@ -38,6 +38,22 @@ class System {
         return JSON.parse(JSON.stringify(result));
     }
 
+    async init() {
+        // LOAD UP NECESSARY DATA
+        await this.loadUsersFromDatabase();
+        await this.loadPostsFromDatabase();
+        await this.loadPostStatsFromDatabase();
+        await this.loadCommentsFromDatabase();
+
+        setInterval(async () => {
+            await this.savePostStatsToDatabase();
+            await this.loadUsersFromDatabase();
+            await this.loadPostsFromDatabase();
+            await this.loadPostStatsFromDatabase();
+            await this.loadCommentsFromDatabase();
+        }, 2000);
+    }
+
     /**
      * 
      * @USER_CONTROLLER
@@ -163,7 +179,7 @@ class System {
     async reactToPost(actionData) {
         this.updateLikeDislikeCounts(actionData);
         const refinedData = this.refineUserActionDataForDatabase(actionData);
-        if (this.updateUserAction(refinedData)) {
+        if (await this.updateUserAction(refinedData)) {
             return {
                 success: true,
                 payload: {
@@ -175,7 +191,7 @@ class System {
 
         return {
             success: false,
-            payload: null
+            payload: {}
         }
     }
 
@@ -204,11 +220,11 @@ class System {
     async fetchUserActions(userId) {
         const UserAction = new this.userAction;
         const userActions = await UserAction.fetchRecordsForUser(userId);
-        const objectifiedActions = {};
+        let objectifiedActions = {};
         userActions.forEach(action => {
             objectifiedActions = {
                 ...objectifiedActions,
-                action
+                [action.postId] : {...action}
             }
         })
 
@@ -218,7 +234,9 @@ class System {
     async updateUserAction(actionData) {
         const UserAction = new this.userAction;
         let actionSaveResult;
-        if (UserAction.doesRecordExist(actionData.userId, actionData.postId)) {
+
+        const isRecordExist = await UserAction.doesRecordExist(actionData.userId, actionData.postId);
+        if (isRecordExist) {
             actionSaveResult = await UserAction.saveToDatabase(actionData);
             if (actionSaveResult.success) {
                 return true;
@@ -269,6 +287,14 @@ class System {
         })
     }
 
+    async savePostStatsToDatabase() {
+        const PostStat = new this.postStat;
+        for (const postId in this.postStats) {
+            const postStat = this.postStats[postId];
+            await PostStat.saveToDatabase(postStat);
+        }
+    }
+
     incrementPostViewCount(postId) {
         this.postStats[postId] = {
             ...this.postStats[postId],
@@ -287,7 +313,6 @@ class System {
             likeCount: newLikeCount <= 0 ? 0 : newLikeCount ,
             dislikeCount: newDislikeCount <= 0 ? 0 : newDislikeCount,
         }
-
         return this.postStats[data.postId];
     }
 

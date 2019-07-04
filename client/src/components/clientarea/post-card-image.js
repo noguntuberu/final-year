@@ -30,20 +30,24 @@ const ImagePostCard = props => {
                 ...action, ...actionStat[postId]
             });
         }
+
+        console.log(action);
     },[])
 
     useEffect(() => {
-        if (action.like && likeIconStyle.color === '#aaaaaa') {
+        if (action.like) {
             setLikeIconStyle(activeIcon);
-            setDislikeIconStyle(inactiveIcon);
-        }
-
-        if (action.dislike && dislikeIconStyle.color === '#aaaaaa') {
-            setDislikeIconStyle(activeIcon);
+        } else {
             setLikeIconStyle(inactiveIcon);
         }
+
+        if (action.dislike) {
+            setDislikeIconStyle(activeIcon);
+        } else {
+            setDislikeIconStyle(inactiveIcon);
+        }
         console.log('called');
-    }, [action, likeIconStyle, dislikeIconStyle, setDislikeIconStyle, setLikeIconStyle])
+    }, [action])
 
     const likePost = () => {
         const {like, dislike} = action;
