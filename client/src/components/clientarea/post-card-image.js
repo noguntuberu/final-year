@@ -16,23 +16,15 @@ const ImagePostCard = props => {
     const {userId, postPath, postData, actionStat, dispatchAction} = props;
     const {postId, title, mediaUri, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
     const postUri = `/${postPath}/${postId}`;
-
-    const [action, setAction] = useState({userId, postId});
+    
+    const [action, setAction] = useState(actionStat[postId]);
     const [likeIconStyle, setLikeIconStyle] = useState(inactiveIcon);
     const [dislikeIconStyle, setDislikeIconStyle] = useState(inactiveIcon);
     useEffect(() => {
-        if (actionStat[postId] === undefined) {
-            setAction({
-                ...action, like: false, dislike: false
-            })
-        } else {
-            setAction({
-                ...action, ...actionStat[postId]
-            });
+        if (action === undefined) {
+            setAction({userId, postId, like: false, dislike: false})
         }
-
-        console.log(action);
-    },[])
+    },[action, userId, postId])
 
     useEffect(() => {
         if (action.like) {
@@ -46,7 +38,6 @@ const ImagePostCard = props => {
         } else {
             setDislikeIconStyle(inactiveIcon);
         }
-        console.log('called');
     }, [action])
 
     const likePost = () => {

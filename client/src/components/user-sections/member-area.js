@@ -25,7 +25,7 @@ const MemberArea = props => {
                         </h5>
                     </div>
     
-                    <SideNav user="client"/>
+                    <SideNav user="member"/>
                 </section>
                 <section className="right-section">
                     <Switch>

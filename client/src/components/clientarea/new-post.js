@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {connect} from 'react-redux';
+import Toast from './toast';
 import {addDraft} from '../../store/action-creators/draft.ac';
 import {uploadPost } from '../../store/action-creators/post.ac';
-import {updateProcessStatus} from '../../store/action-creators/process.ac';
+import { clearProcessStatus,  updateProcessStatus} from '../../store/action-creators/process.ac';
 
 
 const NewPost = props => {
@@ -11,32 +12,29 @@ const NewPost = props => {
     let [postAudience, setPostAudience] = useState('all');
     let [postImage, setPostImage] = useState();
     let [postImageName, setPostImageName] = useState('');
-    let [formMessage, setFormMessage] = useState('');
-    let [alertClass, setAlertClass] = useState('d-none');
+    let [type, setType] = useState();
+    let [message, setMessage] = useState('');
 
-    const {success, payload, updateUploadStatus} = props;
+    const {uploadStat, clearUploadStatus, updateUploadStatus} = props;
     useEffect(() => {
-        if (payload !== formMessage) {
-
-            if(success && alertClass === 'd-none') {
-                setAlertClass('alert alert-success');
-            } else {
-                setAlertClass('alert alert-danger');
+        if (uploadStat.payload !== undefined) {
+            if (!uploadStat.success) {
+                setType(2);
             }
 
-            setFormMessage(payload);
-            setTimeout(() => {
-                setAlertClass('d-none');
-                updateUploadStatus({
-                    process: 'postUpload',
-                    body: {
-                        success: false,
-                        payload: ''
-                    }
-                });
-            }, 2000);
+            if (message !== uploadStat.payload) {
+                setMessage(uploadStat.payload);
+            }
+
+            clearUploadStatus();
         }
-    }, [alertClass, success, payload, formMessage, setFormMessage, updateUploadStatus]);
+    }, [uploadStat, message, clearUploadStatus]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setType(0);
+        }, 2000)
+    }, [uploadStat]);
 
     const onChange = (type, value) => {
         switch(type) {
@@ -80,9 +78,7 @@ const NewPost = props => {
     return (
         <div className="card form-card">
             <form name="new_post" onSubmit = {e => onSubmit(e)}>
-                <div className={alertClass} role="alert">
-                    {formMessage}
-                </div>
+                <Toast data= {{type, message}} />
                 <div className="form-group">
                     <label htmlFor="new-post-title">Title:</label>
                     <input type="text" name="title" className="form-control" id="new-post-title" aria-describedby="newPostTitleHelp" placeholder="Post Title" onInput = {e => onChange('title', e.target.value)}/>
@@ -114,13 +110,14 @@ const NewPost = props => {
 }
 
 const mapStateToProps = state => ({
-    ...state.processes.postUpload
+    uploadStat: {...state.processes.postUpload }
 })
 
 const mapDispatchToProps = dispatch => ({
     saveDraft: (title, body, image, audience) => dispatch(addDraft(title, body, image, audience)),
     uploadPost: (title, body, image, audience) => dispatch(uploadPost(title, body, image, audience)),
-    updateUploadStatus: data => dispatch(updateProcessStatus(data))
+    updateUploadStatus: data => dispatch(updateProcessStatus(data)),
+    clearUploadStatus: () => dispatch(clearProcessStatus('postUpload'))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

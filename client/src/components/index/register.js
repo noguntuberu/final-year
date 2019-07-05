@@ -3,14 +3,16 @@ import {NavLink} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { registerUser } from '../../store/action-creators/guest.ac';
-import { updateProcessStatus } from '../../store/action-creators/process.ac';
+import { clearProcessStatus, updateProcessStatus } from '../../store/action-creators/process.ac';
+import Toast from '../clientarea/toast';
 
 const Register = props => {
-    const {register, updateRegStatus} = props;
-    const {payload} = props.registrationStatus;
+    const {register, clearRegistrationStatus, updateRegStatus} = props;
+    const { registrationStatus } = props;
 
     const
-        [formMessage, setFormMessage] = useState(''), 
+        [type, setType] = useState(),
+        [message, setMessage] = useState(''), 
         [firstName, setFirstname] = useState(''),
         [lastName, setLastname] = useState(''),
         [email, setEmail] = useState(''),
@@ -20,19 +22,26 @@ const Register = props => {
 
     //
     useEffect(() => {
-        if(payload !== formMessage) {
-            setFormMessage(payload);
-            setTimeout(() => {
-                updateRegStatus({
-                    process: 'registration',
-                    body: {
-                        success: false,
-                        payload: ""
-                    }
-                })
-            }, 2000);
+        if(registrationStatus.payload !== undefined) {
+            if(!registrationStatus.success) {
+                setType(2);
+            } else {
+                setType(1);
+            }
+
+            if (message !== registrationStatus.payload) {
+                setMessage(registrationStatus.payload);
+            }
+
+            clearRegistrationStatus();
         }
-    }, [formMessage, payload, updateRegStatus])
+    }, [message, registrationStatus, clearRegistrationStatus])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setType(0);
+        }, 2000)
+    }, [registrationStatus])
 
     const checkEmpty = values => {
         for(let i = 0; i < values.length; i++ ){
@@ -69,9 +78,7 @@ const Register = props => {
     }
     return (
         <form name="register">
-            <div className="alert">
-                {formMessage}
-            </div>
+            <Toast data={{type, message}} />
             <div className="form-row">
                 <div className="col">
                     <input name="firstname" type="text" placeholder="Firstname" onInput={e => setFirstname(e.target.value)}/>
@@ -116,7 +123,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     register : data => dispatch(registerUser(data)),
-    updateRegStatus: data => dispatch(updateProcessStatus(data))
+    updateRegStatus: data => dispatch(updateProcessStatus(data)),
+    clearRegistrationStatus: () => dispatch(clearProcessStatus('registration'))
 })
 
 

@@ -51,7 +51,7 @@ class System {
             await this.loadPostsFromDatabase();
             await this.loadPostStatsFromDatabase();
             await this.loadCommentsFromDatabase();
-        }, 2000);
+        }, 1000);
     }
 
     /**

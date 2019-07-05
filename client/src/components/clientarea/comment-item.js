@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const CommentItem = props => {
-    const {_id, userName, body} = props.commentData;
+    const {userName, body} = props.commentData;
 
     return (
         <div className="comment-item">

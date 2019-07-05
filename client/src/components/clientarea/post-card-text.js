@@ -15,7 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const TextPostCard = props => {
 
     const {userId, postPath, postData, actionStat, dispatchAction} = props;
-    const {postId, title, mediaUri, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
+    const {postId, title, body, viewCount, likeCount, dislikeCount, commentCount} = postData;
     const postUri = `/${postPath}/${postId}`;
 
     const [action, setAction] = useState({userId, postId});
@@ -26,25 +26,27 @@ const TextPostCard = props => {
             setAction({
                 ...action, like: false, dislike: false
             })
-        } else {
+        } else if (actionStat[postId] !== undefined && action.like === undefined){
             setAction({
                 ...action, ...actionStat[postId]
             });
         }
-    },[])
+    },[action, actionStat, postId])
 
     useEffect(() => {
-        if (action.like && likeIconStyle.color === '#aaaaaa') {
+        if (action.like) {
             setLikeIconStyle(activeIcon);
-            setDislikeIconStyle(inactiveIcon);
-        }
-
-        if (action.dislike && dislikeIconStyle.color === '#aaaaaa') {
-            setDislikeIconStyle(activeIcon);
+        } else {
             setLikeIconStyle(inactiveIcon);
         }
+
+        if (action.dislike) {
+            setDislikeIconStyle(activeIcon);
+        } else {
+            setDislikeIconStyle(inactiveIcon);
+        }
         console.log('called');
-    }, [action, likeIconStyle, dislikeIconStyle, setDislikeIconStyle, setLikeIconStyle])
+    }, [action])
 
     const likePost = () => {
         const {like, dislike} = action;
