@@ -27,13 +27,13 @@ const ImagePostCard = props => {
     },[action, userId, postId])
 
     useEffect(() => {
-        if (action.like) {
+        if (action && action.like) {
             setLikeIconStyle(activeIcon);
         } else {
             setLikeIconStyle(inactiveIcon);
         }
 
-        if (action.dislike) {
+        if (action && action.dislike) {
             setDislikeIconStyle(activeIcon);
         } else {
             setDislikeIconStyle(inactiveIcon);
