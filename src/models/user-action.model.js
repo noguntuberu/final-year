@@ -32,6 +32,10 @@ module.exports.readAllRecordsForUser = async userId => {
     })
 }
 
+module.exports.readAllRecords = async () => {
+    return await UserAction.find({});
+}
+
 module.exports.updateRecord = async data => {
     return await UserAction.updateOne(
         {_id: data._id},

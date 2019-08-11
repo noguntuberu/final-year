@@ -16,6 +16,12 @@ module.exports = class UserActionController {
           return this.info;
      }
 
+     async fetchAllRecords() {
+          return JSON.parse(JSON.stringify( 
+               await this.userActionModel.readAllRecords()
+          ));
+     }
+
      async fetchRecordsForUser(userId) {
           return JSON.parse(JSON.stringify(
                await this.userActionModel.readAllRecordsForUser(userId)

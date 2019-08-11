@@ -30,6 +30,7 @@ class System {
         this.posts = {};
         this.comments = {};
         this.postStats = {};
+        this.userActions = {};
         this.commentScores = {};
     }
 
@@ -44,6 +45,7 @@ class System {
         await this.loadPostsFromDatabase();
         await this.loadPostStatsFromDatabase();
         await this.loadCommentsFromDatabase();
+        await this.loadUserActionFromDatabase();
 
         setInterval(async () => {
             await this.savePostStatsToDatabase();
@@ -51,6 +53,7 @@ class System {
             await this.loadPostsFromDatabase();
             await this.loadPostStatsFromDatabase();
             await this.loadCommentsFromDatabase();
+            await this.loadUserActionFromDatabase();
         }, 1000);
     }
 
@@ -176,6 +179,29 @@ class System {
      * 
      * @USER_ACTION_CONTROLLER
      */
+
+    async loadUserActionFromDatabase() {
+        const userActionControl = new this.userAction;
+        const userActions = await userActionControl.fetchAllRecords();
+        if (userActions) {
+            let processedActions = {};
+            for(let i = 0; i < userActions.length; i++) {
+                const userAction = userActions[i];
+                processedActions = {
+                    ...processedActions,
+                    [userAction.postId] : {
+                        ...processedActions[userAction.postId],
+                        [userAction.userId] : {
+                            ...userAction
+                        }
+                    }
+                }
+            }
+
+            this.userActions = processedActions;
+        }
+    }
+
     async reactToPost(actionData) {
         this.updateLikeDislikeCounts(actionData);
         const refinedData = this.refineUserActionDataForDatabase(actionData);
@@ -194,7 +220,7 @@ class System {
             payload: {}
         }
     }
-
+    
     refineUserActionDataForDatabase(rawActionData) {
         if (rawActionData.like === 1) {
             return {
@@ -384,14 +410,105 @@ class System {
      * @OVERALL_ANALYSIS
      */
     //
-    performOverallAnalysisForPost(postId) {
+    getAnalysisGridForPost(postId) {
+        let analysisGrid = {};
+
+        // populate analysisGrid for comments
+        for (const commentId in this.comments[postId]) {
+            const comment = this.comments[postId][commentId];
+            if (analysisGrid[comment.userId]) {
+                analysisGrid[comment.userId].comments = [
+                    ...analysisGrid[comment.userId].comments,
+                    comment.score
+                ]
+            } else {
+                analysisGrid[comment.userId] = {
+                    like: false,
+                    dislike: false,
+                    comments: [comment.score]
+                }
+            }
+        }
+
+        // populate analysisGrid for userActions
+        for (const userId in this.userActions[postId]) {
+            const userAction = this.userActions[postId][userId];
+
+            if(analysisGrid[userId]) {
+                analysisGrid[userId] = {
+                    ...analysisGrid[userId],
+                    like: userAction.like ? 1: 0,
+                    dislike: userAction.dislike ? -1: 0 
+                }
+            } else {
+                analysisGrid[userId] = {
+                    like: userAction.like,
+                    dislike: userAction.dislike,
+                    comments: []
+                }
+            }
+        }
+
+        return analysisGrid;
+    }
+
+    computeScores(analysisGrid) {
         let actualTotalScore = 0,
             expectedTotalScore = 0;
-        
-        for (const commentId in this.comments[postId]) {
-            actualTotalScore += this.comments[postId][commentId].score + 1;
+
+        for(let userId in analysisGrid) {
+            const userGrid = analysisGrid[userId];
+            const commentWeight = 0.5 / userGrid.comments.length;
+
+            // get action score
+            let actionScore = userGrid.like ? 2 : 0;
+            actionScore = userGrid.dislike ? 1: actionScore;
+            actionScore *= 0.5;
+
+            // get comment score
+            let commentScore = 0;
+            for(let i = 0; i < userGrid.comments.length; i++) {
+                commentScore += (userGrid.comments[i] + 1) * commentWeight;
+            }
+            actualTotalScore += actionScore + commentScore;
             expectedTotalScore += 2;
         }
+
+        return {actualTotalScore, expectedTotalScore};
+    }
+
+    computeScoreForGroup(analysisGrid, groupName, groupKey) {
+        let actualTotalScore = 0,
+            expectedTotalScore = 0;
+
+        for(let userId in analysisGrid) {
+            const userGrid = analysisGrid[userId];
+
+            if (this.users[userId][groupName] === groupKey) {
+                const commentWeight = 0.5 / userGrid.comments.length;
+    
+                // get action score
+                let actionScore = userGrid.like ? 2 : 0;
+                actionScore = userGrid.dislike ? 1: actionScore;
+                actionScore *= 0.5;
+    
+                // get comment score
+                let commentScore = 0;
+                for(let i = 0; i < userGrid.comments.length; i++) {
+                    commentScore += (userGrid.comments[i] + 1) * commentWeight;
+                }
+                actualTotalScore += actionScore + commentScore;
+                expectedTotalScore += 2;
+            }
+        }
+        return {actualTotalScore, expectedTotalScore};
+    }
+    //
+    performOverallAnalysisForPost(postId) {
+        //
+        const analysisGrid = this.getAnalysisGridForPost(postId);
+        const {actualTotalScore, expectedTotalScore} = this.computeScores(analysisGrid);
+
         return this.analyzer.analyze(actualTotalScore, expectedTotalScore);
     }
 
@@ -406,42 +523,21 @@ class System {
         }
     }
     performGenderAnalysisForPost(postId) {
-        let maleActualScore = 0, 
-            maleExpectedScore = 0,
-            maleTotalScore = 0,
-            femaleActualScore = 0,
-            femaleExpectedScore = 0,
-            femaleTotalScore = 0,
-            neutralActualScore = 0,
-            neutralExpectedScore = 0,
-            neutralTotalScore = 0;
+        const analysisGrid = this.getAnalysisGridForPost(postId);
+        const male = {
+            ...this.computeScoreForGroup(analysisGrid, 'gender', 'M')
+        };
+        const female= {
+            ...this.computeScoreForGroup(analysisGrid, 'gender', 'F')
+        };
+        const neutral = {
+            ...this.computeScoreForGroup(analysisGrid, 'gender', undefined)
+        };
         //
-
-        // GET negative and positive scores for each gender
-        for (const commentId in this.comments[postId]) {
-            const comment = this.comments[postId][commentId],
-                  user = this.users[comment.userId];
-            if (user) {
-                if (user.gender === 'M') {
-                    maleActualScore += comment.score + 1;
-                    maleExpectedScore += 2;
-                }else if (user.gender === 'F') {
-                    femaleActualScore += comment.score + 1;
-                    femaleExpectedScore += 2;
-                }else {
-                    neutralActualScore += comment.score + 1;
-                    neutralExpectedScore += 2;
-                }
-            }
-        }
-        
-        maleTotalScore = this.analyzer.analyze(maleActualScore, maleExpectedScore);
-        femaleTotalScore = this.analyzer.analyze(femaleActualScore, femaleExpectedScore);
-        neutralTotalScore = this.analyzer.analyze(neutralActualScore, neutralExpectedScore);
         return {
-            "Male": maleTotalScore,
-            "Female": femaleTotalScore,
-            "Neutral": neutralTotalScore
+            "Male": this.analyzer.analyze(male.actualTotalScore, male.expectedTotalScore),
+            "Female": this.analyzer.analyze(female.actualTotalScore, female.expectedTotalScore),
+            "Neutral": this.analyzer.analyze(neutral.actualTotalScore, neutral.expectedTotalScore)
         }
     }
 }
