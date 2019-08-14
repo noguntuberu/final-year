@@ -34,7 +34,7 @@ const AnalysisDisplay = props => {
 
     return (
         <div>
-            <TextPostCard postData={props.posts[id]}/>
+            <TextPostCard postPath='admin/post/analysis' postData={props.posts[id]}/>
             <div className="analysis-wrapper">
                 <AnalysisItem analysisData = {
                     {

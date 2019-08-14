@@ -13,6 +13,7 @@ import { incrementPostView } from '../../store/action-creators/post.ac';
 const DetailedPost = props => {
     const id = props.match.params.id;
     const { incrementView } = props;
+    const postPath = 'member/post';
 
     useEffect(() => {
         incrementView(id)
@@ -21,7 +22,8 @@ const DetailedPost = props => {
     return (
         <div>
             {
-                props.posts[id].mediaUri ? <ImagePostCard postData = {props.posts[id]} /> : <TextPostCard postData = {props.posts[id]} />
+                props.posts[id].mediaUri ?  <ImagePostCard postPath= {postPath} postData = {props.posts[id]} /> : 
+                                            <TextPostCard postPath={postPath} postData = {props.posts[id]} />
             }
             <CommentList postId={id}/>
         </div>

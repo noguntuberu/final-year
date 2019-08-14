@@ -125,4 +125,40 @@ Router.delete('/', async (req, res) => {
     res.send(await postModel.remove({}));
 })
 
+
+Router.delete('/:postId', async (req, res) => {
+    console.log(req.params.postId);
+    const result = await postModel.remove({
+        _id: req.params.postId
+    });
+
+    if(result && result.ok) {
+        return res.json({
+            success: true,
+            message: "Post deleted"
+        })
+    }
+
+    return res.json({
+        success: false,
+        message: "Post not deleted"
+    })
+})
+
+Router.delete('/cleardb', async(req, res) => {
+    const mongoose = require('mongoose');
+    try {
+        if (await mongoose.connection.dropDatabase()) {
+            return res.json({
+                message: 'done'
+            })
+        }
+
+    } catch (err) {
+        return res.json({
+            message: 'could not clear db'
+        })
+    }
+});
+
 module.exports = Router;

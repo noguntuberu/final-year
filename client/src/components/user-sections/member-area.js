@@ -6,7 +6,7 @@ import PostList from '../clientarea/post-list';
 import DetailedPost from '../clientarea/detailed-post';
 
 const MemberArea = props => {
-    const {isLoggedIn, level} = props;
+    const {name, isLoggedIn, level} = props;
     return isLoggedIn && level !== 0? (
         <div>
             <header>
@@ -21,7 +21,7 @@ const MemberArea = props => {
                             <img className="card-img-top" src={require("../../assets/images/coffee.jpg")} alt=""/>
                         </div>
                         <h5 className="card-title user-name">
-                            Oguntuberu Nathan O.
+                            {name}
                         </h5>
                     </div>
     

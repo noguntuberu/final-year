@@ -14,8 +14,13 @@ const SideNavPane = props => {
         <nav className="card side-nav">
             <ul className="side-nav-ul">
                 <li><NavLink to={`/${user}`}>Home</NavLink></li>
-                {user === "admin"? 
-                    <li><NavLink to={`/${user}/post/new`}>Add New Post</NavLink></li> :
+                {user === "admin"?
+                    (
+                        <div> 
+                        <li><NavLink to={`/${user}/post/new`}>Add New Post</NavLink></li>
+                        <li><NavLink to={`/${user}/post/new-user`}>Add Employee</NavLink></li>
+                        </div>
+                    ):
                     null
                 }
                 <li><a href="str" className="button" onClick={logOut}>Log Out</a></li>

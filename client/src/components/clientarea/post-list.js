@@ -22,6 +22,10 @@ const PostList = props => {
         }
     },[userClass, level]);
 
+    const isEmpty = object => {
+        return Object.entries(object).length === 0;
+    }
+
     const extractPosts = postList => {
         let posts = [];
         for (const postId in postList) {
@@ -40,7 +44,9 @@ const PostList = props => {
     }
     return (
         <div className="post-list">
-            {extractPosts(posts)}
+            {
+                isEmpty(posts) ? <div className="d-flex text-center">Sorry, there are no posts at the moment.</div> : extractPosts(posts) 
+            }
         </div>
     )
 }

@@ -56,7 +56,7 @@ const Register = props => {
     const submitForm = () => {
         if(checkEmpty([firstName, lastName, email, password, cPassword, gender])) {
             if (password === cPassword) {
-                register({firstName, lastName, email, password, cPassword, gender, level: 2});
+                register({firstName, lastName, email, password, cPassword, gender, level: 1});
             } else {
                 updateRegStatus({
                     process: 'registration',
@@ -77,44 +77,43 @@ const Register = props => {
         }
     }
     return (
-        <form name="register">
-            <Toast data={{type, message}} />
-            <div className="form-row">
-                <div className="col">
-                    <input name="firstname" type="text" placeholder="Firstname" onInput={e => setFirstname(e.target.value)}/>
+        <div className="card form-card">
+            <form name="register">
+                <Toast data={{type, message}} />
+                <div className="form-group form-row ">
+                    <div className="col">
+                        <input className="form-control" name="firstname" type="text" placeholder="Firstname" onInput={e => setFirstname(e.target.value)}/>
+                    </div>
+                    <div className="col">
+                        <input className="form-control" name="lastname" type="text" placeholder="Lastname" onInput={e => setLastname(e.target.value)} />
+                    </div>
                 </div>
-                <div className="col">
-                    <input name="lastname" type="text" placeholder="Lastname" onInput={e => setLastname(e.target.value)} />
+                <div className="form-group form-row">
+                    <div className="col">
+                        <input className="form-control" name="email" type="text" placeholder="Email Address" onInput={e => setEmail(e.target.value)}/>
+                    </div>
                 </div>
-            </div>
-            <div className="form-row">
-                <div className="col">
-                    <input name="email" type="text" placeholder="Email Address" onInput={e => setEmail(e.target.value)}/>
+                <div className="form-group form-row">
+                    <div className="col">
+                        <input className="form-control" name="password" type="password" placeholder="Password" onInput = {e => setPassword(e.target.value)}/>
+                    </div>
+                    <div className="col">
+                        <input className="form-control" name="cpassword" type="password" placeholder="Confirm Password" onInput = {e => setCPassword(e.target.value)}/>
+                    </div>
                 </div>
-            </div>
-            <div className="form-row">
-                <div className="col">
-                    <input name="password" type="password" placeholder="Password" onInput = {e => setPassword(e.target.value)}/>
+                <div className="form-group form-row">
+                    <div className="col">
+                        <select className="form-control" name="gender" onChange={e => setGender(e.target.value)}>
+                            <option >Select Gender</option>
+                            <option value="N">Not Now</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="col">
-                    <input name="cpassword" type="password" placeholder="Confirm Password" onInput = {e => setCPassword(e.target.value)}/>
-                </div>
-            </div>
-            <div className="form-row">
-                <div className="col">
-                    <select name="gender" onChange={e => setGender(e.target.value)}>
-                        <option >Select Gender</option>
-                        <option value="N">Not Now</option>
-                        <option value="M">Male</option>
-                        <option value="F">Female</option>
-                    </select>
-                </div>
-            </div>
-            <input name="submit" type="button" value="Register" className="reg-btn" onClick={submitForm}/>
-            <div style={{textAlign: "center"}}>
-                Already a Member? <NavLink to="/" style = {{fontWeight: "bold"}}>Log In</NavLink>
-            </div>
-        </form>
+                <input name="submit" type="button" value="Register" className="reg-btn" onClick={submitForm}/>
+            </form>
+        </div>
     )
 }
 

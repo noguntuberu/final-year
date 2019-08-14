@@ -21,28 +21,23 @@ config.setUpDatabase(mongoose);
 // Instantiate app
 const app = express();
 
-// CORS whitelist
-const corsWhitelist= ['https://api.aylien.com', 'http://localhost:3000'];
-const corsOptions = {
-    origin: function (origin, callback) {
-        if (corsWhitelist.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
-}
-
 // Set up Middleware
 app.use(express.static('client'));
 app.use(compression());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(helmet());
 
 // Set up Routes
+app.use((req, res, next) => {
+    req.header('Access-Control-Allow-Origin', '*');
+    req.header('Access-Control-Allow-Headers', '*');
+
+    next();
+});
+
 app.use('/user', UserRoute);
 app.use('/post', PostRoute);
 

@@ -4,11 +4,12 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import {connect} from 'react-redux';
 import SideNav from '../clientarea/nav-side';
 import NewPost from '../clientarea/new-post';
+import NewUser from '../clientarea/new-user';
 import PostList from '../clientarea/post-list';
 import AnalysisArea from '../clientarea/analysis-display';
 
 const AdminArea = props => {
-    const {isLoggedIn, level} = props;
+    const {isLoggedIn, level, name} = props;
     return isLoggedIn && level === 0 ? (
     <div>
         <header>
@@ -23,7 +24,7 @@ const AdminArea = props => {
                         <img className="card-img-top" src={require("../../assets/images/coffee.jpg")} alt=""/>
                     </div>
                     <h5 className="card-title user-name">
-                        Oguntuberu Nathan O.
+                        {name}
                     </h5>
                 </div>
 
@@ -33,6 +34,7 @@ const AdminArea = props => {
                 <Switch>
                     <Route exact path="/admin" component={PostList} />
                     <Route path="/admin/post/new" component={NewPost} />
+                    <Route path="/admin/post/new-user" component={NewUser} />
                     <Route path="/admin/post/analysis/:id" component={AnalysisArea} />
                     <Redirect from = "/admin/post" to="/admin" />
                 </Switch>

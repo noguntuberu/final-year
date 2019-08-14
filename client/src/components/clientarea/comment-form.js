@@ -8,14 +8,15 @@ const CommentForm = props => {
     const {userId, postId, commentStatus, sendComment} = props;
 
     //form state
-    const [commenBody, setCommentBody] = useState('');
+    const [commentBody, setCommentBody] = useState('');
 
     //
     const submitComment = () => {
-        if (commenBody.length < 1) {
+        if (commentBody.length < 1) {
 
         } else {
-            sendComment({userId, postId, body: commenBody});
+            setCommentBody('');
+            sendComment({userId, postId, body: commentBody});
         }
     }
     return (

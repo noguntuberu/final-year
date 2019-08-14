@@ -4,6 +4,7 @@ import CommentItem from './comment-item';
 import CommentForm from './comment-form';
 
 import { loadComments } from '../../store/action-creators/comment.ac';
+import './comment-list.css';
 
 
 const CommentList = props => {
@@ -30,9 +31,9 @@ const CommentList = props => {
         return loadedComments;
     }
     return (
-        <div className="card comment-list">
+        <div className="card comment-area">
             <h3> Comments</h3>
-            <div>
+            <div className="comment-list">
                 {commentList}
             </div>
             <CommentForm postId={postId}/>

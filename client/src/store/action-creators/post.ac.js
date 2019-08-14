@@ -3,7 +3,7 @@
  */
 import { ADD_POST, ADD_LOADED_POSTS, FALSIFY_POST_UPLOADED, 
         ADD_POST_UPLOAD_STAT, LOAD_POSTS, UPLOAD_POST, 
-        INCREMENT_VIEW } from '../action-constants';
+        INCREMENT_VIEW, DELETE_POST } from '../action-constants';
 
 export const loadPosts = userId => ({
     type: LOAD_POSTS,
@@ -47,5 +47,10 @@ export const addPostUploadStat = (isUploaded, message ) => ({
 
 export const incrementPostView = postId => ({
     type: INCREMENT_VIEW,
+    payload: postId
+})
+
+export const deletePost = postId => ({
+    type: DELETE_POST,
     payload: postId
 })

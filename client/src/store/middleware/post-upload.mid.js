@@ -31,14 +31,19 @@ export default store => next => action => {
             const data = response.data;
             if (data.success) {
                 store.dispatch(addPost(data.payload));
-                store.dispatch(updateProcessStatus({
+                next(updateProcessStatus({
                     process: 'postUpload',
-                    body: "Upload Successful"
+                    body: {
+                        success: true,
+                        payload: "Upload Successful"
+                    }
                 }));
             } else {
-                store.dispatch(updateProcessStatus({
+                next(updateProcessStatus({
                     process: 'postUpload',
-                    body: data
+                    body: {
+                        ...data
+                    }
                 }));
             }
         })
