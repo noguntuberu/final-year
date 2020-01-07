@@ -2,7 +2,7 @@
  * 
  */
 //
-const aylien = require('aylien_textapi');
+const aylien = require('../vendor/aylien_textapi');
 class EOMSAnalyzer {
 
     analyze(actualScore, expectedScore) {
