@@ -32,13 +32,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(helmet());
 
 // Set up Routes
-app.use((req, res, next) => {
-    req.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    req.setHeader('Access-Control-Allow-Headers', '*');
+// app.use((req, res, next) => {
+//     req.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//     req.setHeader('Access-Control-Allow-Headers', '*');
 
-    next();
-});
+//     next();
+// });
 
 app.use('/user', UserRoute);
 app.use('/post', PostRoute);
