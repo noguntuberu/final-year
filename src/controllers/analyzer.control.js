@@ -20,11 +20,7 @@ class EOMSAnalyzer {
             text: commentData.body
         });
         
-        if (analysisResult.polarity === "negative"){
-            return (-1) * analysisResult.polarity_confidence;
-        } else {
-            return analysisResult.polarity_confidence;
-        }
+        return analysisResult.polarity_confidence;
     }
 }
 

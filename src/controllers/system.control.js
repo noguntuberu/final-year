@@ -4,17 +4,17 @@
  * The system object is a singleton that bears the weight of the app.
  */
 const comment = require('./comment.control'),
-      groupAnalysis = require('./group-analysis.control'),
-      postAnalysis = require('./post-analysis.control'),
-      postStat = require('./post-stat.control'),
-      post = require('./post.control'),
-      userAction = require('./user-action.control'),
-      user = require('./user.control'),
-      analyzer = require('./analyzer.control');
+    groupAnalysis = require('./group-analysis.control'),
+    postAnalysis = require('./post-analysis.control'),
+    postStat = require('./post-stat.control'),
+    post = require('./post.control'),
+    userAction = require('./user-action.control'),
+    user = require('./user.control'),
+    analyzer = require('./analyzer.control');
 //
 
 class System {
-    constructor () {
+    constructor() {
         // controllers
         this.analyzer = analyzer;
         this.comment = comment;
@@ -65,7 +65,7 @@ class System {
         this.users = {}
     }
     getUsers() {
-        return this.users;        
+        return this.users;
     }
     getUser(userId) {
         return this.users[userId];
@@ -74,17 +74,17 @@ class System {
     addUserToList(userInfo) {
         this.users = {
             ...this.users,
-            [userInfo._id] : userInfo
+            [userInfo._id]: userInfo
         }
     }
 
     async addNewUser(data) {
         const User = new this.user;
-        const result = this.convertToJSON(await  User.createDatabaseRecord({
-            ...data, 
+        const result = this.convertToJSON(await User.createDatabaseRecord({
+            ...data,
             level: parseInt(data.level)
         }));
-        
+
         if (result.success) {
             this.addUserToList(result.payload);
             return true;
@@ -165,7 +165,7 @@ class System {
         for (const postId in this.posts) {
             reducedPosts = {
                 ...reducedPosts,
-                [postId] : {
+                [postId]: {
                     ...this.postStats[postId],
                     ...this.posts[postId]
                 }
@@ -185,13 +185,13 @@ class System {
         const userActions = await userActionControl.fetchAllRecords();
         if (userActions) {
             let processedActions = {};
-            for(let i = 0; i < userActions.length; i++) {
+            for (let i = 0; i < userActions.length; i++) {
                 const userAction = userActions[i];
                 processedActions = {
                     ...processedActions,
-                    [userAction.postId] : {
+                    [userAction.postId]: {
                         ...processedActions[userAction.postId],
-                        [userAction.userId] : {
+                        [userAction.userId]: {
                             ...userAction
                         }
                     }
@@ -220,7 +220,7 @@ class System {
             payload: {}
         }
     }
-    
+
     refineUserActionDataForDatabase(rawActionData) {
         if (rawActionData.like === 1) {
             return {
@@ -250,7 +250,7 @@ class System {
         userActions.forEach(action => {
             objectifiedActions = {
                 ...objectifiedActions,
-                [action.postId] : {...action}
+                [action.postId]: { ...action }
             }
         })
 
@@ -269,9 +269,9 @@ class System {
             }
             return false;
         }
-        const {userId, postId, like, dislike} = actionData;
+        const { userId, postId, like, dislike } = actionData;
         actionSaveResult = await UserAction.createDatabaseRecord(userId, postId, like, dislike);
-        if(actionSaveResult.success) {
+        if (actionSaveResult.success) {
             return true;
         }
         return false;
@@ -285,7 +285,7 @@ class System {
     addToPostStatList(postStat) {
         this.postStats = {
             ...this.postStats,
-            [postStat.postId] : postStat
+            [postStat.postId]: postStat
         }
     }
 
@@ -333,10 +333,10 @@ class System {
     updateLikeDislikeCounts(data) {
         const newLikeCount = this.postStats[data.postId].likeCount + parseInt(data.like);
         const newDislikeCount = this.postStats[data.postId].dislikeCount + parseInt(data.dislike);
-        
+
         this.postStats[data.postId] = {
             ...this.postStats[data.postId],
-            likeCount: newLikeCount <= 0 ? 0 : newLikeCount ,
+            likeCount: newLikeCount <= 0 ? 0 : newLikeCount,
             dislikeCount: newDislikeCount <= 0 ? 0 : newDislikeCount,
         }
         return this.postStats[data.postId];
@@ -350,16 +350,16 @@ class System {
         return this.comments[postId][commentId];
     }
     getPostComments(postId) {
-        const comments =  this.comments[postId];
-        let processedComments  = {};
-        for(const commentId in comments) {
+        const comments = this.comments[postId];
+        let processedComments = {};
+        for (const commentId in comments) {
             const userId = comments[commentId].userId;
             const user = this.getUser(userId);
             processedComments = {
                 ...processedComments,
-                [commentId] : {
+                [commentId]: {
                     ...comments[commentId],
-                    userName: user.firstName + " " + user.lastName 
+                    userName: user.firstName + " " + user.lastName
                 }
             }
         }
@@ -377,7 +377,7 @@ class System {
     async addComment(data) {
         const Comment = new this.comment;
         const result = await Comment.createDatabaseRecord(data);
-        if(result.success) {
+        if (result.success) {
             const commentInfo = Comment.getInfo();
             this.addCommentToList(commentInfo);
             return {
@@ -434,11 +434,11 @@ class System {
         for (const userId in this.userActions[postId]) {
             const userAction = this.userActions[postId][userId];
 
-            if(analysisGrid[userId]) {
+            if (analysisGrid[userId]) {
                 analysisGrid[userId] = {
                     ...analysisGrid[userId],
-                    like: userAction.like ? 1: 0,
-                    dislike: userAction.dislike ? -1: 0 
+                    like: userAction.like ? 1 : 0,
+                    dislike: userAction.dislike ? -1 : 0
                 }
             } else {
                 analysisGrid[userId] = {
@@ -456,58 +456,56 @@ class System {
         let actualTotalScore = 0,
             expectedTotalScore = 0;
 
-        for(let userId in analysisGrid) {
+        for (let userId in analysisGrid) {
             const userGrid = analysisGrid[userId];
             const commentWeight = 0.5 / userGrid.comments.length;
 
             // get action score
-            let actionScore = userGrid.like ? 2 : 0;
-            actionScore = userGrid.dislike ? 1: actionScore;
+            let actionScore = userGrid.like == 0 ? userGrid.dislike : userGrid.like;
             actionScore *= 0.5;
 
             // get comment score
             let commentScore = 0;
-            for(let i = 0; i < userGrid.comments.length; i++) {
-                commentScore += (userGrid.comments[i] + 1) * commentWeight;
+            for (let i = 0; i < userGrid.comments.length; i++) {
+                commentScore += (userGrid.comments[i]) * commentWeight;
             }
             actualTotalScore += actionScore + commentScore;
-            expectedTotalScore += 2;
+            expectedTotalScore += 1;
         }
 
-        return {actualTotalScore, expectedTotalScore};
+        return { actualTotalScore, expectedTotalScore };
     }
 
     computeScoreForGroup(analysisGrid, groupName, groupKey) {
         let actualTotalScore = 0,
             expectedTotalScore = 0;
 
-        for(let userId in analysisGrid) {
+        for (let userId in analysisGrid) {
             const userGrid = analysisGrid[userId];
 
             if (this.users[userId][groupName] === groupKey) {
                 const commentWeight = 0.5 / userGrid.comments.length;
-    
+
                 // get action score
-                let actionScore = userGrid.like ? 2 : 0;
-                actionScore = userGrid.dislike ? 1: actionScore;
+                let actionScore = userGrid.like == 0 ? userGrid.dislike : userGrid.like;
                 actionScore *= 0.5;
-    
+
                 // get comment score
                 let commentScore = 0;
-                for(let i = 0; i < userGrid.comments.length; i++) {
-                    commentScore += (userGrid.comments[i] + 1) * commentWeight;
+                for (let i = 0; i < userGrid.comments.length; i++) {
+                    commentScore += (userGrid.comments[i]) * commentWeight;
                 }
                 actualTotalScore += actionScore + commentScore;
-                expectedTotalScore += 2;
+                expectedTotalScore += 1;
             }
         }
-        return {actualTotalScore, expectedTotalScore};
+        return { actualTotalScore, expectedTotalScore };
     }
     //
     performOverallAnalysisForPost(postId) {
         //
         const analysisGrid = this.getAnalysisGridForPost(postId);
-        const {actualTotalScore, expectedTotalScore} = this.computeScores(analysisGrid);
+        const { actualTotalScore, expectedTotalScore } = this.computeScores(analysisGrid);
 
         return this.analyzer.analyze(actualTotalScore, expectedTotalScore);
     }
@@ -515,8 +513,8 @@ class System {
     /**
      * @GROUP_ANALYSIS
      */
-    
-     // This method is for testing purposes
+
+    // This method is for testing purposes
     getAUser() {
         for (const userId in this.users) {
             return userId;
@@ -527,7 +525,7 @@ class System {
         const male = {
             ...this.computeScoreForGroup(analysisGrid, 'gender', 'M')
         };
-        const female= {
+        const female = {
             ...this.computeScoreForGroup(analysisGrid, 'gender', 'F')
         };
         const neutral = {
