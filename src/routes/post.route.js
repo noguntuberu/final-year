@@ -58,7 +58,7 @@ Router.post('/new', async (req, res) => {
     } else {
         const image = req.files.image;
         const mv = util.promisify(image.mv);
-        const imagePath = path.resolve(`${__dirname}`, `../../client/public/uploads/${image.name}`);
+        const imagePath = path.resolve(`${__dirname}`, `../../public/uploads/${image.name}`);
         try {
             mv(imagePath);
             if ((await fs.existsSync(imagePath)) === false) {
