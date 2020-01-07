@@ -101,7 +101,7 @@ Router.post('/comment', async (req, res) => {
     } catch(err) {
         return res.status(500).json({
             success: false,
-            payload: err.message
+            payload: err
         })
     }
 })
