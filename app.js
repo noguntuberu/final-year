@@ -2,13 +2,14 @@
  * 
  */
 const   express = require('express'),
-        mongoose = require('mongoose');
+        mongoose = require('mongoose'),
         cors = require('cors'),
         fileUpload = require('express-fileupload'),
         bodyParser = require('body-parser'),
         compression = require('compression'),
         helmet = require('helmet'),
-        config = require('./config/config');
+        config = require('./config/config'),
+        path = require('path');
 
 const UserRoute = require('./src/routes/user.route');
 const PostRoute = require('./src/routes/post.route');
