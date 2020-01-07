@@ -25,7 +25,7 @@ const app = express();
 // Set up Middleware
 app.use(express.static('public'));
 app.use(compression());
-// app.use(cors());
+app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -33,8 +33,9 @@ app.use(helmet());
 
 // Set up Routes
 app.use((req, res, next) => {
-    req.header('Access-Control-Allow-Origin', '*');
-    req.header('Access-Control-Allow-Headers', '*');
+    req.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    req.setHeader('Access-Control-Allow-Headers', '*');
 
     next();
 });
