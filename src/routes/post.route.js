@@ -14,17 +14,17 @@ const System = require('../controllers/system.control');
 Router.get('/:userId', async (req, res) => {
     const userId = req.params.userId;
     const result = {
-        posts : System.reducePostsAndStatsForReduxStore(),
+        posts: System.reducePostsAndStatsForReduxStore(),
         userActions: await System.fetchUserActions(userId)
     }
-    res.json(result);    
+    res.json(result);
 })
 
 Router.get('/:id', async (req, res) => {
-    
+
 })
 
-Router.get('/analysis/:id', async(req, res) => {
+Router.get('/analysis/:id', async (req, res) => {
     res.json({
         postAnalysis: System.performOverallAnalysisForPost(req.params.id),
         groupAnalysis: {
@@ -52,7 +52,7 @@ Router.post('/new', async (req, res) => {
         success: false,
         payload: "Post upload failed."
     }
-    
+
     if (req.files === undefined || req.files === null) {
         mediaUri = "";
     } else {
@@ -70,7 +70,7 @@ Router.post('/new', async (req, res) => {
         }
     }
 
-    const result = await System.addNewPost({...req.body, mediaUri});
+    const result = await System.addNewPost({ ...req.body, mediaUri });
     if (result && (await System.addNewPostStat(result))) {
         statusCode = 200;
         returnData.success = true;
@@ -88,20 +88,28 @@ Router.post('/comment', async (req, res) => {
         const score = await Analyzer.analyzeTextSentiment(req.body);
         const dateCreated = Date.now();
 
-        const result = await System.addComment({...req.body, score, dateCreated});
+        let result = await System.addComment({ ...req.body, score, dateCreated });
         const user = System.getUser(req.body.userId);
-        
+
+        let response = {
+            success: false,
+            payload: "Comment not added"
+        };
+
         if (result.success) {
-            result.payload = {
-                ...System.getComment(req.body.postId, result.payload),
-                userName: user.firstName + " " +user.lastName 
+            response = {
+                success: true,
+                payload: {
+                    ...System.getComment(req.body.postId, result.payload),
+                    userName: user ? `${user.firstName} ${user.lastName}` : ''
+                }
             }
         }
-        res.send(result);
-    } catch(err) {
+        res.send(await response);
+    } catch (err) {
         return res.status(500).json({
             success: false,
-            payload: err.data
+            payload: err.message
         })
     }
 })
@@ -132,7 +140,7 @@ Router.delete('/:postId', async (req, res) => {
         _id: req.params.postId
     });
 
-    if(result && result.ok) {
+    if (result && result.ok) {
         return res.json({
             success: true,
             message: "Post deleted"
@@ -145,7 +153,7 @@ Router.delete('/:postId', async (req, res) => {
     })
 })
 
-Router.delete('/cleardb', async(req, res) => {
+Router.delete('/cleardb', async (req, res) => {
     const mongoose = require('mongoose');
     try {
         if (await mongoose.connection.dropDatabase()) {

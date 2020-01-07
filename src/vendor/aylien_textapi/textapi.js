@@ -68,8 +68,13 @@ function AYLIENTextAPI(options) {
    * @param     {callback}  callback - The callback that handles the response
    */
   this.sentiment = async function(params) {
-    params = util.extend({endpointPath: 'sentiment'}, this.normalizeParams(params));
-    return await createAPIRequest(params, [['text', 'url']]);
+    try {
+      params = util.extend({endpointPath: 'sentiment'}, this.normalizeParams(params));
+      const response = await createAPIRequest(params, [['text', 'url']]);
+      return response;
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   /**

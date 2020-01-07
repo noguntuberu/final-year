@@ -20,7 +20,6 @@ class EOMSAnalyzer {
             const analysisResult = await analyzer.sentiment({
                 text: commentData.body
             });
-            
             return analysisResult.polarity_confidence;
         } catch (err) {
             console.log(err);
