@@ -23,9 +23,9 @@ config.setUpDatabase(mongoose);
 const app = express();
 
 // Set up Middleware
+app.use(cors());
 app.use(express.static('public'));
 app.use(compression());
-app.use(cors());
 app.use(fileUpload());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
