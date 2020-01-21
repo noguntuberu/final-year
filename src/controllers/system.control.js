@@ -462,7 +462,7 @@ class System {
 
             // get action score
             let actionScore = userGrid.like == 0 ? userGrid.dislike : userGrid.like;
-            actionScore *= 0.5;
+            actionScore *= userGrid.comments.length <= 0 ? 1 : 0.5;
 
             // get comment score
             let commentScore = 0;
@@ -488,7 +488,7 @@ class System {
 
                 // get action score
                 let actionScore = userGrid.like == 0 ? userGrid.dislike : userGrid.like;
-                actionScore *= 0.5;
+                actionScore *= userGrid.comments.length <= 0 ? 1 : 0.5;
 
                 // get comment score
                 let commentScore = 0;
