@@ -23,7 +23,7 @@ const SideNavPane = props => {
                     ):
                     null
                 }
-                <li><a href="str" className="button" onClick={logOut}>Log Out</a></li>
+                <li><a className="button" onClick={logOut}>Log Out</a></li>
             </ul>
         </nav>
     )
