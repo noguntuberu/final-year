@@ -1,13 +1,15 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
 
 const SideNavPane = props => {
     const {user} = props;
+    const history = useHistory();
     const logOut = () => {
         localStorage.clear();
+        history.push('/');
     }
     return (
         <nav className="card side-nav">
@@ -22,7 +24,7 @@ const SideNavPane = props => {
                     ):
                     null
                 }
-                <li><NavLink  onClick={logOut} to={`/`}>Log Out</NavLink></li>
+                <li class="is-clickable"><a onClick={logOut}>Log Out</a></li>
             </ul>
         </nav>
     )

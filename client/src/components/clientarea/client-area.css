@@ -179,3 +179,7 @@ section {
     background: teal;
     color: #ffffff;
 }
+
+.is-clickable {
+    cursor: pointer;
+}
