@@ -29,8 +29,8 @@ const MemberArea = props => {
                 </section>
                 <section className="right-section">
                     <Switch>
-                        <Route exact path="/member" component={PostList} />
-                        <Route exact path="/member/post/:id" component={DetailedPost} />
+                        <Route path="/member/post/:id" component={DetailedPost} />
+                        <Route path="/member" component={PostList} />
                         <Redirect from = "/member/post" to="/member" />
                     </Switch>
                 </section>
