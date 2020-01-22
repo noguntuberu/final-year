@@ -6,7 +6,7 @@ const App = () => {
     return (
         <BrowserRouter>
             <div className="page-wrapper">
-                    <Route path="/" component={Authorizer} />
+                    <Route component={Authorizer} />
             </div>
         </BrowserRouter>
     )
