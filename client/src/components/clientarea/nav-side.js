@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
@@ -8,7 +8,6 @@ const SideNavPane = props => {
     const {user} = props;
     const logOut = () => {
         localStorage.clear();
-        props.history.push('/');
     }
     return (
         <nav className="card side-nav">
@@ -23,10 +22,10 @@ const SideNavPane = props => {
                     ):
                     null
                 }
-                <li onClick={logOut}><a className="button" >Log Out</a></li>
+                <li><NavLink  onClick={logOut} to={`/`}>Log Out</NavLink></li>
             </ul>
         </nav>
     )
 }
 
-export default withRouter(SideNavPane);
+export default SideNavPane;

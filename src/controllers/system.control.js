@@ -145,7 +145,10 @@ class System {
         const result = this.convertToJSON(await Post.fetchAll());
         if (result) {
             result.forEach(post => {
-                this.addNewPostToList(post);
+                this.addNewPostToList({
+                    ...post,
+                    mediaUri: `${process.env.APP_URI}:${process.env.APP_PORT}/images/${post.mediaUri}`
+                });
             })
             return true;
         }

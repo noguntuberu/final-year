@@ -49,6 +49,10 @@ app.use((req, res, next) => {
 
 app.use('/user', UserRoute);
 app.use('/post', PostRoute);
+app.get('/images/:imageName', async (req, res, next) => {
+    const {imageName} = req.params;
+    res.sendFile(`./public/uploads/${imageName}`);
+});
 
 // Start Server
 app.listen(port = process.env.PORT || 3000, async () => {

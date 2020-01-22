@@ -134,7 +134,7 @@ const ImagePostCard = props => {
 
     return (
         <div className="card">
-            <img src={'/uploads/'+mediaUri} className="card-img-top" alt="" />
+            <img src={mediaUri} className="card-img-top" alt="" />
             <div className="card-body">
                 <h3 className="card-title"><NavLink to={postUri}>{title}</NavLink></h3>
                 <p className="card-text">
