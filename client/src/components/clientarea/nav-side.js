@@ -8,8 +8,8 @@ const SideNavPane = props => {
     const {user} = props;
     const history = useHistory();
     const logOut = () => {
-        localStorage.clear();
-        history.push('/');
+        localStorage.removeItem('store');
+        window.location = '/';
     }
     return (
         <nav className="card side-nav">
