@@ -24,7 +24,7 @@ const SideNavPane = props => {
                     ):
                     null
                 }
-                <li class="is-clickable"><a onClick={logOut}>Log Out</a></li>
+                <li class="is-clickable"  onClick={logOut}>Log Out</li>
             </ul>
         </nav>
     )
