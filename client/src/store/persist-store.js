@@ -4,12 +4,12 @@
 
 export default {
     initializeStore: () => {
-        return localStorage.getItem('admin_store') ? 
-               JSON.parse(localStorage.getItem('admin_store')) : 
+        return localStorage.getItem('store') ? 
+               JSON.parse(localStorage.getItem('store')) : 
                {};
     },
 
     saveStore: (store) => {
-        localStorage.setItem('admin_store', JSON.stringify(store));
+        localStorage.setItem('store', JSON.stringify(store));
     }
 }

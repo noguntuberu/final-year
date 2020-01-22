@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './client-area.css';
 
@@ -8,7 +8,7 @@ const SideNavPane = props => {
     const {user} = props;
     const logOut = () => {
         localStorage.clear();
-        props.match.history.push('/');
+        props.history.push('/');
     }
     return (
         <nav className="card side-nav">
@@ -29,4 +29,4 @@ const SideNavPane = props => {
     )
 }
 
-export default SideNavPane;
+export default withRouter(SideNavPane);
