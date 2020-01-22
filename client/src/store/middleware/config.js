@@ -1,3 +1,3 @@
 export default {
-    host: 'https://entsys.herokuapp.com'
+    host: 'http://199.192.22.129:3000'
 }
