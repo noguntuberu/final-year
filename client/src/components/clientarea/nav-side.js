@@ -9,7 +9,7 @@ const SideNavPane = props => {
     const history = useHistory();
     const logOut = () => {
         localStorage.clear();
-        history.push('/');
+        // history.push('/');
     }
     return (
         <nav className="card side-nav">
@@ -24,7 +24,7 @@ const SideNavPane = props => {
                     ):
                     null
                 }
-                <li class="is-clickable"  onClick={logOut}>Log Out</li>
+                <li class="is-clickable"  onClick={logOut}><a>Log Out</a></li>
             </ul>
         </nav>
     )
