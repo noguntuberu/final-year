@@ -51,7 +51,7 @@ app.use('/user', UserRoute);
 app.use('/post', PostRoute);
 app.get('/images/:imageName', async (req, res, next) => {
     const {imageName} = req.params;
-    res.sendFile(`./public/uploads/${imageName}`);
+    res.sendFile(path.resolve([__dirname, `./public/uploads/${imageName}`]));
 });
 
 // Start Server
